@@ -1,4 +1,4 @@
-from pyPPL.soap_connector import (SOAPAction, SOAPConnector, SOAPActionLogin, )
+from pyPPL.soap_connector import SOAPConnector
 import logging.config
 from datetime import datetime
 from os import path
