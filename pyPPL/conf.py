@@ -24,13 +24,41 @@ SOAP_HEADERS = {
 }
 
 # available countries and currencies
-COUNTRIES = 'CZ', 'DE', 'GB', 'SK', 'AT', 'PL', 'CH', 'FI', 'HU', \
-            'SI', 'LV', 'EE', 'LT', 'BE', 'DK', 'ES', 'FR', 'IE', \
-            'IT', 'NL', 'NO', 'PT', 'SE', 'RO', 'BG', 'GB', 'HR', \
-            'LU'
-CURRENCIES = 'CZK', 'EUR', 'PLN', 'HUF', 'RON'
-# available directions
-ROUTE_TYPE = 'IN', 'OUT'
+class Country(Enum):
+    CZ = 'CZ'
+    DE = 'DE'
+    GB = 'GB'
+    SK = 'SK'
+    AT = 'AT'
+    PL = 'PL'
+    CH = 'CH'
+    FI = 'FI'
+    HU = 'HU'
+    SI = 'SI'
+    LV = 'LV'
+    EE = 'EE'
+    LT = 'LT'
+    BE = 'BE'
+    DK = 'DK'
+    ES = 'ES'
+    FR = 'FR'
+    IE = 'IE'
+    IT = 'IT'
+    NL = 'NL'
+    NO = 'NO'
+    PT = 'PT'
+    SE = 'SE'
+    RO = 'RO'
+    BG = 'BG'
+    HR = 'HR'
+    LU = 'LU'
+
+class Currency(Enum):
+    CZK = 'CZK'
+    EUR = 'EUR'
+    PLN = 'PLN'
+    HUF = 'HUF'
+    RON = 'RON'
 
 # return codes
 class ReturnCode(Enum):
@@ -145,6 +173,38 @@ class Product(Enum):
     PPL_PARCEL_RETURN_CONNECT_IMPORT = 'RECI'
     PPL_PARCEL_RETURN_CONNECT_EU = 'RECE'
 
+CASH_ON_DELIVERY = [
+    Product.PPL_PARCEL_CZ_BUSINESS_COD,
+    Product.PPL_PARCEL_CZ_AFTERNOON_PACKAGE_COD,
+    Product.EXPORT_PACKAGE_COD,
+    Product.PPL_PARCEL_CZ_PRIVATE_COD,
+    Product.PPL_PARCEL_CONNECT_COD,
+    Product.PPL_PARCEL_CZ_SMART_COD,
+    Product.PPL_PARCEL_SMART_EUROPE_COD,
+]
+
+DELIVERY_SATURDAY = [
+    Product.PPL_PARCEL_CZ_BUSINESS,
+    Product.PPL_PARCEL_CZ_BUSINESS_COD,
+    Product.PPL_PARCEL_CZ_PRIVATE,
+    Product.PPL_PARCEL_CZ_PRIVATE_COD,
+    Product.PPL_PARCEL_CZ_AFTERNOON_PACKAGE,
+    Product.PPL_PARCEL_CZ_AFTERNOON_PACKAGE_COD,
+    Product.EXPORT_PACKAGE,
+    Product.EXPORT_PACKAGE_COD,
+    Product.PPL_PARCEL_CZ_SMART,
+    Product.PPL_PARCEL_CZ_SMART_COD,
+    Product.PPL_PARCEL_SMART_EUROPE,
+    Product.PPL_PARCEL_SMART_EUROPE_COD,
+]
+
+PRIVATE_PRODUCTS = [
+    Product.PPL_PARCEL_CZ_PRIVATE,
+    Product.PPL_PARCEL_CZ_PRIVATE_COD,
+    Product.PPL_PARCEL_CZ_AFTERNOON_PACKAGE,
+    Product.PPL_PARCEL_CZ_AFTERNOON_PACKAGE_COD,
+]
+
 class PackageStatus(Enum):
     DATA_SHIPMENT = 900
     PICKED_UP_FROM_SENDER = 150
@@ -191,5 +251,32 @@ class PackageStatus(Enum):
     COD_PAID_TO_PARTNER = 614
 
 
+class Flag(Enum):
+    SL = 'SL'
+    SL2 = 'SL2'
 
+class ExternalNumber(Enum):
+    B2CO = 'B2CO'
+    CUST = 'CUST'
+    VARS = 'VARS'
+    PSN = 'PSN'
+    PJJD = 'PJJD'
 
+class Directions(Enum):
+    IN = 'IN'
+    OUT = 'OUT'
+
+class Services(Enum):
+    COD = 'COD' # Cash on delivery
+    EXW = 'EXW' # cash only on delivery
+    INSR = 'INSR' # insurance
+    MD = 'MD' # mid day
+    A15 = 'A15' # age 15
+    A18 = 'A18' # age 18
+    PUBC = 'PUBC' # pickup by driver
+    DPOD = 'DPOD' # additional delivery attempt
+
+class AddressType(Enum):
+    BP = 'BP' # address to return undelivered packages
+    RETD = 'RETD' # address to return return packages
+    RETC = 'RETC' # address to return return connect packages

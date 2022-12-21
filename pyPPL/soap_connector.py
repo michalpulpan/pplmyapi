@@ -7,8 +7,13 @@ import xmltodict
 import json
 import copy
 
-from .soap_actions.login import SOAPActionLogin
-from .soap_actions.is_healthy import SOAPActionIsHealthy
+# operational SOAP actions
+from .soap_actions.operational.login import SOAPActionLogin
+from .soap_actions.operational.is_healthy import SOAPActionIsHealthy
+from .soap_actions.operational.version import SOAPActionVersion
+# business SOAP actions
+from .soap_actions.business.create_orders import SOAPActionCreateOrders
+
 
 from . import conf
 
@@ -26,6 +31,11 @@ class SOAPConnector:
     def call():
         pass
 
+
+    """
+    Operational SOAP actions
+    """
+    
     def is_healty(self) -> bool:
         is_healty = SOAPActionIsHealthy()
         response = is_healty()
@@ -46,3 +56,16 @@ class SOAPConnector:
             self.AUTH_TOKEN_TIMESTAMP = datetime.now().timestamp()
             return True
         return False
+
+    def version(self) -> str or None:
+        version = SOAPActionVersion()
+        response = version()
+        if 'version' in response:
+            return response['version']
+        return None
+
+    """
+    Business SOAP actions
+    """
+
+    

@@ -1,20 +1,20 @@
-from .base import (SOAPAction)
+from ..base import (SOAPAction)
 import xmltodict
 import logging
 
 
 logger = logging.getLogger(__name__)
 
-class SOAPActionIsHealthy(SOAPAction):
-    ACTION = 'IsHealtly'
-    soap_body = """<v1:IsHealtly/>"""
+class SOAPActionVersion(SOAPAction):
+    ACTION = 'Version'
+    soap_body = """<v1:Version/>"""
 
     def __init__(self, ) -> None:
         super().__init__()
 
     def make_soap_body(self) -> str:
         """
-        Make SOAP body for IsHealtly action
+        Make SOAP body for Version action
         """
         self.data += self.soap_body
 
@@ -24,4 +24,4 @@ class SOAPActionIsHealthy(SOAPAction):
 
         """
         response_object = xmltodict.parse(response)
-        return {'healthy': response_object['IsHealtlyResponse']['IsHealtlyResult']}
+        return {'version': response_object['VersionResponse']['VersionResult']}

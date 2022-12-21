@@ -1,8 +1,8 @@
-from .base import (SOAPAction)
+from ..base import (SOAPAction)
 
 import xmltodict
 import logging
-from .. import conf
+from ... import conf
 
 
 logger = logging.getLogger(__name__)

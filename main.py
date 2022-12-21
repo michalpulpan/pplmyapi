@@ -26,3 +26,5 @@ con = SOAPConnector()
 con.login()
 # check health
 con.is_healty()
+# get version
+con.version()
