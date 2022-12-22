@@ -23,8 +23,13 @@ SOAP_HEADERS = {
     'SOAPAction': os.getenv('SOAP_ACTION_URL'),
 }
 
+class Enum2(Enum):
+    @classmethod
+    def has_value(cls, value):
+        return value in cls._value2member_map_ 
+
 # available countries and currencies
-class Country(Enum):
+class Country(Enum2):
     CZ = 'CZ'
     DE = 'DE'
     GB = 'GB'
@@ -53,7 +58,7 @@ class Country(Enum):
     HR = 'HR'
     LU = 'LU'
 
-class Currency(Enum):
+class Currency(Enum2):
     CZK = 'CZK'
     EUR = 'EUR'
     PLN = 'PLN'
@@ -61,7 +66,7 @@ class Currency(Enum):
     RON = 'RON'
 
 # return codes
-class ReturnCode(Enum):
+class ReturnCode(Enum2):
     LOADED_SUCCESSFULLY = 0
     INVALID_OR_MISSING_PACKAGE_NUMBER = 1000
     UNKNOWN_PRODUCT_TYPE = 1001
@@ -153,7 +158,7 @@ class ReturnCode(Enum):
     QUANTITY_IS_BELLOW_MINIMUM = 4003
     GLOBAL_ERROR_AS36 = 'AS36'
 
-class Product(Enum):
+class Product(Enum2):
     PPL_PARCEL_CZ_BUSINESS = 'BUSS'
     PPL_PARCEL_CZ_BUSINESS_COD = 'BUSD'
     PPL_PARCEL_CZ_AFTERNOON_PACKAGE = 'DOPO'
@@ -205,7 +210,7 @@ PRIVATE_PRODUCTS = [
     Product.PPL_PARCEL_CZ_AFTERNOON_PACKAGE_COD,
 ]
 
-class PackageStatus(Enum):
+class PackageStatus(Enum2):
     DATA_SHIPMENT = 900
     PICKED_UP_FROM_SENDER = 150
     PICKED_UP_FROM_SENDER_WITH_CLAUSE = 151
@@ -251,22 +256,22 @@ class PackageStatus(Enum):
     COD_PAID_TO_PARTNER = 614
 
 
-class Flag(Enum):
+class Flag(Enum2):
     SL = 'SL'
     SL2 = 'SL2'
 
-class ExternalNumber(Enum):
+class ExternalNumber(Enum2):
     B2CO = 'B2CO'
     CUST = 'CUST'
     VARS = 'VARS'
     PSN = 'PSN'
     PJJD = 'PJJD'
 
-class Directions(Enum):
+class Directions(Enum2):
     IN = 'IN'
     OUT = 'OUT'
 
-class Services(Enum):
+class Services(Enum2):
     COD = 'COD' # Cash on delivery
     EXW = 'EXW' # cash only on delivery
     INSR = 'INSR' # insurance
@@ -276,7 +281,7 @@ class Services(Enum):
     PUBC = 'PUBC' # pickup by driver
     DPOD = 'DPOD' # additional delivery attempt
 
-class AddressType(Enum):
+class AddressType(Enum2):
     BP = 'BP' # address to return undelivered packages
     RETD = 'RETD' # address to return return packages
     RETC = 'RETC' # address to return return connect packages

@@ -13,6 +13,7 @@ from .soap_actions.operational.is_healthy import SOAPActionIsHealthy
 from .soap_actions.operational.version import SOAPActionVersion
 # business SOAP actions
 from .soap_actions.business.create_orders import SOAPActionCreateOrders
+from .soap_actions.business.create_packages import SOAPActionCreatePackages
 
 
 from . import conf
@@ -68,4 +69,9 @@ class SOAPConnector:
     Business SOAP actions
     """
 
-    
+    def create_packages(self, packages: list) -> list:
+        if not self.login():
+            return None
+        create_packages = SOAPActionCreatePackages(self.AUTH_TOKEN, packages)
+        response = create_packages()
+        return response

@@ -5,15 +5,15 @@ from .base import (SerializableObject, )
 class Recipient(SerializableObject):
 
     xml_mapping = {
-        'name': 'Name',
-        'city': 'City',
-        'street': 'Street',
-        'zip_code': 'ZipCode',
-        'country': 'Country',
-        'phone': 'Phone',
-        'email': 'Email',
-        'contact': 'Contact',
-        'name2': 'Name2',
+        'name': 'v1:Name',
+        'city': 'v1:City',
+        'street': 'v1:Street',
+        'zip_code': 'v1:ZipCode',
+        'country': 'v1:Country',
+        'phone': 'v1:Phone',
+        'email': 'v1:Email',
+        'contact': 'v1:Contact',
+        'name2': 'v1:Name2',
     }
 
     def __init__(
@@ -34,7 +34,7 @@ class Recipient(SerializableObject):
         self.street = max_length(street, 50)
         self.zip_code = max_length(zip_code, 10)
 
-        if country not in Country.__members__: 
+        if not Country.has_value(country): 
             raise ValueError(f'Country {country} is not supported')
         self.country = country
 
