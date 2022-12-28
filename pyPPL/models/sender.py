@@ -1,19 +1,19 @@
 from ..conf import (Country, )
 from ..validators import (max_length, )
-from .base import (SerializableObject, )
+from .base import (SerializableObject, SerializerField, SerializerList, )
 
 class Sender(SerializableObject):
 
     xml_mapping = {
-        'name': 'v1:Name',
-        'city': 'v1:City',
-        'street': 'v1:Street',
-        'zip_code': 'v1:ZipCode',
-        'country': 'v1:Country',
-        'phone': 'v1:Phone',
-        'email': 'v1:Email',
-        'contact': 'v1:Contact',
-        'name2': 'v1:Name2',
+        'name': SerializerField('v1:Name'),
+        'city': SerializerField('v1:City'),
+        'street': SerializerField('v1:Street'),
+        'zip_code': SerializerField('v1:ZipCode'),
+        'country': SerializerField('v1:Country'),
+        'phone': SerializerField('v1:Phone'),
+        'email': SerializerField('v1:Email'),
+        'contact': SerializerField('v1:Contact'),
+        'name2': SerializerField('v1:Name2'),
     }
 
 

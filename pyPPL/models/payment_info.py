@@ -1,20 +1,20 @@
 from ..conf import (Currency, )
 from ..validators import (max_length, )
-from .base import (SerializableObject, )
+from .base import (SerializableObject, SerializerField)
 
 class PaymentInfo(SerializableObject):
 
     xml_mapping = {
-        'cod_price': 'v1:CodPrice',
-        'cod_currency': 'v1:CodCurrency',
-        'cod_vs': 'v1:CodVarSym',
-        'insurance_price': 'v1:InsurPrice',
-        'insurance_currency': 'v1:InsurCurrency',
-        'bank_account': 'v1:BankAccount',
-        'bank_code': 'v1:BankCode',
-        'iban': 'v1:IBAN',
-        'swift': 'v1:Swift',
-        'specific_symbol': 'v1:SpecSymbol',
+        'cod_price': SerializerField('v1:CodPrice'),
+        'cod_currency': SerializerField('v1:CodCurrency'),
+        'cod_vs': SerializerField('v1:CodVarSym'),
+        'insurance_price': SerializerField('v1:InsurPrice'),
+        'insurance_currency': SerializerField('v1:InsurCurrency'),
+        'bank_account': SerializerField('v1:BankAccount'),
+        'bank_code': SerializerField('v1:BankCode'),
+        'iban': SerializerField('v1:IBAN'),
+        'swift': SerializerField('v1:Swift'),
+        'specific_symbol': SerializerField('v1:SpecSymbol'),
     }
 
     cod_price: float = None
@@ -87,4 +87,5 @@ class PaymentInfo(SerializableObject):
 
         self.specific_symbol = max_length(specific_symbol, 10)
 
-    
+    def is_cod(self) -> bool:
+        return self.cod_price is not None

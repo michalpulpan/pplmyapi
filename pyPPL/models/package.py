@@ -1,26 +1,30 @@
+from pyPPL.models.package_external_number import PackageExternalNumber
+from pyPPL.models.package_set import PackageSet
+from pyPPL.models.special_delivery import SpecialDelivery
 from ..validators import (max_length, )
-from .base import (SerializableObject, )
-from ..conf import (Product, )
+from .base import (SerializableObject, SerializerField, SerializerList, )
+from ..conf import (Product, CASH_ON_DELIVERY, PARCEL_SHOP_PRODUCTS)
 
 from .recipient import (Recipient, )
 from .sender import (Sender, )
 from .payment_info import (PaymentInfo, )
+from .weighted_package_info import (WeightedPackageInfo, )
 
 class Package(SerializableObject):
 
     xml_mapping = {
-        'package_number': 'v1:PackNumber',
-        'package_product_type': 'v1:PackProductType',
-        'note': 'v1:Note',
-        'sender': 'v1:Sender',
-        'recipient': 'v1:Recipient',
-        'depo_code': 'v1:DepoCode',
-        'special_delivery': 'v1:SpecialDelivery',
-        'payment_info': 'v1:PaymentInfo',
-        'external_numbers': 'v1:PackagesExtNums',
-        'package_services': 'v1:PackageServices',
-        'weighted_package_info': 'v1:WeightedPackageInfo',
-        'package_set': 'v1:PackageSet',
+        'package_number': SerializerField('v1:PackNumber'),
+        'package_product_type': SerializerField('v1:PackProductType'),
+        'note': SerializerField('v1:Note'),
+        'sender': SerializerField('v1:Sender'),
+        'recipient': SerializerField('v1:Recipient'),
+        'depo_code': SerializerField('v1:DepoCode'),
+        'special_delivery': SerializerField('v1:SpecialDelivery'),
+        'payment_info': SerializerField('v1:PaymentInfo'),
+        'external_numbers': SerializerList('v1:PackagesExtNums', list_item_name='v1:MyApiPackageExtNum'),
+        'package_services': SerializerField('v1:PackageServices'),
+        # 'weighted_package_info': SerializerField('v1:WeightedPackageInfo'),
+        # 'package_set': SerializerField('v1:PackageSet'),
         
 
     }
@@ -31,9 +35,9 @@ class Package(SerializableObject):
     sender: Sender = None
     recipient: Recipient = None
     depo_code: str = None
-    special_delivery = None
+    special_delivery: SpecialDelivery = None
     payment_info: PaymentInfo = None
-    external_numbers: list = []
+    external_numbers: list[PackageExternalNumber] = []
     package_services: list = []
     flags: list = []
     weighted_package_info = None
@@ -48,13 +52,13 @@ class Package(SerializableObject):
         recipient: Recipient,
         sender: Sender = None,
         depo_code: str = None,
-        special_delivery = None, # TODO: Type
+        special_delivery: SpecialDelivery = None,
         payment_info: PaymentInfo = None, 
-        external_numbers: list = [],  # TODO: Type
+        external_numbers: list = [PackageExternalNumber],
         package_services: list = [], # TODO: Type
         flags: list = [], # TODO: Type
-        weighted_package_info = None, # TODO: Type
-        package_set = None # TODO: Type
+        weighted_package_info: WeightedPackageInfo = None,
+        package_set: PackageSet = None 
         ) -> None:
         
         # TODO: control if product_type has cash on delivery and payment_info provided
@@ -65,15 +69,30 @@ class Package(SerializableObject):
         self.sender = sender
         self.recipient = recipient
         
-        if not Product.has_value(package_product_type):
+        if not package_product_type in Product:
             raise ValueError(f'Product {package_product_type} is not supported')
-        self.package_product_type = package_product_type
+        self.package_product_type = package_product_type.value
         
         self.depo_code = max_length(depo_code, 10)
+        
+        if special_delivery is not None and special_delivery.parcel_shop_code is not None:
+            # parcel shop code is only supported for parcel shop products
+            if not package_product_type in PARCEL_SHOP_PRODUCTS:
+                raise ValueError(f'Product {package_product_type} does not support parcel shop in special delivery')
         self.special_delivery = special_delivery
+
+        if payment_info is not None and payment_info.is_cod():
+            if not package_product_type in CASH_ON_DELIVERY:
+                raise ValueError(f'Product {package_product_type} does not support cash on delivery')
+        
         self.payment_info = payment_info
+
+
         self.external_numbers = external_numbers
         self.package_services = package_services
         self.flags = flags
         self.weighted_package_info = weighted_package_info
+        if package_set is None:
+            # create a new package set containing this package only
+            package_set = PackageSet(package_number)
         self.package_set = package_set

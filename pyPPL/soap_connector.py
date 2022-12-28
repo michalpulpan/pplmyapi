@@ -46,9 +46,12 @@ class SOAPConnector:
             
     def login(self) -> bool:
 
-        if self.AUTH_TOKEN is not None:
+        if self.AUTH_TOKEN is not None and self.AUTH_TOKEN_TIMESTAMP is not None:
             if datetime.now().timestamp() - self.AUTH_TOKEN_TIMESTAMP < self.AUTH_TOKEN_MAX_AGE:
                 return True
+        # reset token and timestamp
+        self.AUTH_TOKEN = None
+        self.AUTH_TOKEN_TIMESTAMP = None
 
         login = SOAPActionLogin()
         response = login()

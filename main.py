@@ -1,10 +1,15 @@
+from pyPPL.conf import Product, ExternalNumber
 from pyPPL.models.payment_info import PaymentInfo
 from pyPPL.models.recipient import Recipient
+from pyPPL.models.special_delivery import SpecialDelivery
+from pyPPL.models.weighted_package_info import WeightedPackageInfo
+from pyPPL.models.package_external_number import PackageExternalNumber
 from pyPPL.soap_connector import SOAPConnector
 import logging.config
 from datetime import datetime
 from os import path
 from pyPPL.models.package import Package
+
 
 CONFIG_DIR = "./config"
 LOG_DIR = "./logs"
@@ -36,7 +41,7 @@ con.version()
 # create packages
 package = Package(
     package_number="123456789",
-    package_product_type='BUSS',
+    package_product_type=Product.PPL_PARCEL_CZ_SMART_COD,
     note = "test",
     recipient=Recipient(
         name="John Doe",
@@ -56,7 +61,23 @@ package = Package(
         specific_symbol='123456789',
         bank_account='123456789',
         bank_code='0300'
-    )
+    ),
+    weighted_package_info=WeightedPackageInfo(
+        weight=10.22,
+    ),
+    special_delivery=SpecialDelivery(
+        parcel_shop_code='123456789',
+    ),
+    external_numbers=[
+        PackageExternalNumber(
+            external_number='123456789',
+            code=ExternalNumber.B2CO
+        ),
+        PackageExternalNumber(
+            external_number='123456789',
+            code=ExternalNumber.CUST
+        )
+    ]
 )
 
 print(package.to_xml())
