@@ -281,6 +281,7 @@ class PackageStatus(Enum2):
 
 
 class Flag(Enum2):
+    CL = 'CL'
     SL = 'SL'
     SL2 = 'SL2'
 

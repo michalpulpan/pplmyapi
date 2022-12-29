@@ -21,7 +21,7 @@ class PackageExternalNumber(SerializableObject):
         if code not in ExternalNumber:
             raise ValueError(f'Invalid code: {code} for external number {external_number}')
 
-        self.code = code
+        self.code = code.value
         self.external_number = max_length(external_number, 50)
 
         

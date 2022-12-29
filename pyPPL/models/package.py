@@ -1,14 +1,15 @@
 from pyPPL.models.package_external_number import PackageExternalNumber
 from pyPPL.models.package_set import PackageSet
 from pyPPL.models.special_delivery import SpecialDelivery
+from pyPPL.models.weighted_package_info import WeightedPackageInfo
+from pyPPL.models.package_service import PackageService
+from pyPPL.models.recipient import Recipient
+from pyPPL.models.payment_info import PaymentInfo
+from pyPPL.models.sender import Sender
+from pyPPL.models.package_flag import PackageFlag
 from ..validators import (max_length, )
 from .base import (SerializableObject, SerializerField, SerializerList, )
 from ..conf import (Product, CASH_ON_DELIVERY, PARCEL_SHOP_PRODUCTS)
-
-from .recipient import (Recipient, )
-from .sender import (Sender, )
-from .payment_info import (PaymentInfo, )
-from .weighted_package_info import (WeightedPackageInfo, )
 
 class Package(SerializableObject):
 
@@ -22,11 +23,10 @@ class Package(SerializableObject):
         'special_delivery': SerializerField('v1:SpecialDelivery'),
         'payment_info': SerializerField('v1:PaymentInfo'),
         'external_numbers': SerializerList('v1:PackagesExtNums', list_item_name='v1:MyApiPackageExtNum'),
-        'package_services': SerializerField('v1:PackageServices'),
+        'package_services': SerializerList('v1:PackageServices', list_item_name='v1:MyApiPackageInServices'),
         # 'weighted_package_info': SerializerField('v1:WeightedPackageInfo'),
+        'flags': SerializerList('v1:PackageFlags', list_item_name='v1:MyApiFlag'),
         # 'package_set': SerializerField('v1:PackageSet'),
-        
-
     }
 
     package_number: str = None
@@ -38,8 +38,8 @@ class Package(SerializableObject):
     special_delivery: SpecialDelivery = None
     payment_info: PaymentInfo = None
     external_numbers: list[PackageExternalNumber] = []
-    package_services: list = []
-    flags: list = []
+    package_services: list[PackageService] = []
+    flags: list[PackageFlag] = []
     weighted_package_info = None
     package_set = None
 
@@ -54,9 +54,9 @@ class Package(SerializableObject):
         depo_code: str = None,
         special_delivery: SpecialDelivery = None,
         payment_info: PaymentInfo = None, 
-        external_numbers: list = [PackageExternalNumber],
-        package_services: list = [], # TODO: Type
-        flags: list = [], # TODO: Type
+        external_numbers: list[PackageExternalNumber] = [],
+        package_services: list[PackageService] = [],
+        flags: list[PackageFlag] = [],
         weighted_package_info: WeightedPackageInfo = None,
         package_set: PackageSet = None 
         ) -> None:

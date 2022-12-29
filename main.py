@@ -1,4 +1,6 @@
-from pyPPL.conf import Product, ExternalNumber
+from pyPPL.conf import Product, ExternalNumber, Flag, Services
+from pyPPL.models.package_flag import PackageFlag
+from pyPPL.models.package_service import PackageService
 from pyPPL.models.payment_info import PaymentInfo
 from pyPPL.models.recipient import Recipient
 from pyPPL.models.special_delivery import SpecialDelivery
@@ -76,6 +78,17 @@ package = Package(
         PackageExternalNumber(
             external_number='123456789',
             code=ExternalNumber.CUST
+        )
+    ],
+    flags=[
+        PackageFlag(
+            code=Flag.CL,
+            value=True
+        )
+    ],
+    package_services=[
+        PackageService(
+            code=Services.COD,
         )
     ]
 )
