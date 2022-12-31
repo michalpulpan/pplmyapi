@@ -1,12 +1,13 @@
+from collections import OrderedDict
 from ..conf import (Currency, )
 from ..validators import (max_length, )
 from .base import (SerializableObject, SerializerField, )
 
 class SpecialDelivery(SerializableObject):
 
-    xml_mapping = {
-        'parcel_shop_code': SerializerField('v1:ParcelShopCode'),
-    }
+    xml_mapping = OrderedDict([
+        ('parcel_shop_code', SerializerField('v1:ParcelShopCode')),
+    ])
 
     parcel_shop_code: str = None
 

@@ -1,21 +1,22 @@
+from collections import OrderedDict
 from ..conf import (Currency, )
 from ..validators import (max_length, )
 from .base import (SerializableObject, SerializerField)
 
 class PaymentInfo(SerializableObject):
 
-    xml_mapping = {
-        'cod_price': SerializerField('v1:CodPrice'),
-        'cod_currency': SerializerField('v1:CodCurrency'),
-        'cod_vs': SerializerField('v1:CodVarSym'),
-        'insurance_price': SerializerField('v1:InsurPrice'),
-        'insurance_currency': SerializerField('v1:InsurCurrency'),
-        'bank_account': SerializerField('v1:BankAccount'),
-        'bank_code': SerializerField('v1:BankCode'),
-        'iban': SerializerField('v1:IBAN'),
-        'swift': SerializerField('v1:Swift'),
-        'specific_symbol': SerializerField('v1:SpecSymbol'),
-    }
+    xml_mapping = OrderedDict([
+        ('bank_account', SerializerField('v1:BankAccount')),
+        ('bank_code', SerializerField('v1:BankCode')),
+        ('cod_currency', SerializerField('v1:CodCurrency')),
+        ('cod_price', SerializerField('v1:CodPrice')),
+        ('cod_vs', SerializerField('v1:CodVarSym')),
+        ('iban', SerializerField('v1:IBAN')),
+        ('insurance_currency', SerializerField('v1:InsurCurrency')),
+        ('insurance_price', SerializerField('v1:InsurPrice')),
+        ('specific_symbol', SerializerField('v1:SpecSymbol')),
+        ('swift', SerializerField('v1:Swift')),
+    ])
 
     cod_price: float = None
     cod_currency: str = None

@@ -7,6 +7,8 @@ import xmltodict
 import json
 import copy
 
+from pyPPL.models.package import Package
+
 # operational SOAP actions
 from .soap_actions.operational.login import SOAPActionLogin
 from .soap_actions.operational.is_healthy import SOAPActionIsHealthy
@@ -72,7 +74,7 @@ class SOAPConnector:
     Business SOAP actions
     """
 
-    def create_packages(self, packages: list) -> list:
+    def create_packages(self, packages: list[Package]) -> list:
         if not self.login():
             return None
         create_packages = SOAPActionCreatePackages(self.AUTH_TOKEN, packages)

@@ -1,12 +1,13 @@
+from collections import OrderedDict
 from ..conf import (Currency, )
 from ..validators import (max_length, )
-from .base import (SerializableObject, )
+from .base import (SerializableObject, SerializerField, )
 
 class WeightedPackageInfo(SerializableObject):
 
-    xml_mapping = {
-        'weight': 'v1:Weight',
-    }
+    xml_mapping = OrderedDict([
+        ('weight', SerializerField('v1:Weight')),
+    ])
 
     weight: float = None
 

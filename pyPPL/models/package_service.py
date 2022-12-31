@@ -1,13 +1,13 @@
+from collections import OrderedDict
 from ..conf import (Services, )
 from ..validators import (max_length, )
 from .base import (SerializableObject, SerializerField)
 
 class PackageService(SerializableObject):
 
-    xml_mapping = {
-        'code': SerializerField('v1:SvcCode'),
-    }
-
+    xml_mapping = OrderedDict([
+        ('code', SerializerField('v1:SvcCode')),
+    ])
     code: str
 
     def __init__(

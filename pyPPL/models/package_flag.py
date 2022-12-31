@@ -1,13 +1,15 @@
+from collections import OrderedDict
 from ..conf import (Flag, )
 from ..validators import (max_length, )
 from .base import (SerializableObject, SerializerField)
 
 class PackageFlag(SerializableObject):
 
-    xml_mapping = {
-        'code': SerializerField('v1:Code'),
-        'value': SerializerField('v1:Value'),
-    }
+    xml_mapping = OrderedDict([
+        ('code', SerializerField('v1:Code')),
+        ('value', SerializerField('v1:Value')),
+    ])
+
 
     code: str
     value: str

@@ -1,14 +1,15 @@
+from collections import OrderedDict
 from ..conf import (Currency, )
 from ..validators import (max_length, )
-from .base import (SerializableObject, )
+from .base import (SerializableObject, SerializerField, )
 
 class PackageSet(SerializableObject):
 
-    xml_mapping = {
-        'master_number': 'v1:MastepackNumber',
-        'current_number_in_set': 'v1:PackageInSetNr',
-        'total_packages': 'v1:PackagesInSet',
-    }
+    xml_mapping = OrderedDict([
+        ('master_number', SerializerField('v1:MastepackNumber')),
+        ('current_number_in_set', SerializerField('v1:PackageInSetNr')),
+        ('total_packages', SerializerField('v1:PackagesInSet')),
+    ])
 
     master_number: str = None
     current_number_in_set: int = 1

@@ -6,6 +6,7 @@ from datetime import datetime
 import xmltodict
 import json
 import copy
+import xml.etree.ElementTree as ET
 
 from .. import conf
 
@@ -28,10 +29,10 @@ class SOAPAction(ABC):
         """
         Make SOAP header                        
         """
-        self.data += f"""<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://myapi.ppl.cz/v1"> 
+        self.data += f"""<?xml version="1.0" encoding="utf-8"?>
+        <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://myapi.ppl.cz/v1"> 
         <soapenv:Header/>
-        <soapenv:Body>
-        """
+        <soapenv:Body>"""
     def footer(self) -> None:
         """
         Make SOAP footer
@@ -46,6 +47,8 @@ class SOAPAction(ABC):
         self.header()
         self.make_soap_body()
         self.footer()
+        element = ET.XML(self.data)
+        self.data = ET.tostring(element, encoding='unicode')
         return self.data
 
     @abstractmethod
@@ -86,17 +89,20 @@ class SOAPAction(ABC):
         
         self.make_data()
 
-        logging.debug(f"Calling SOAP action {self.ACTION} with data: {self.data}")
+        logging.debug(f"Calling SOAP action {self.ACTION} with data: {self.data} and headers: {self.HEADERS} and URL: {self.URL}")
+        
+        # print(self.data)
         response = requests.post(
             self.URL,
             data=self.data,
             headers=self.HEADERS,
             timeout=10,
         )
+        # print(response.request.headers)
         if response.status_code != 200:
             # raise Exception(f"SOAP API returned status code {response.status_code}")
             logging.error(f"SOAP API returned status code {response.status_code}")
-            logging.error(f"SOAP API returned status code {response.text}")
+            logging.error(f"SOAP API returned content {response.text}")
             response_body = self.parse_error_response(
                 self.get_body(response.text)
             )

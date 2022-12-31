@@ -1,13 +1,14 @@
+from collections import OrderedDict
 from ..conf import (ExternalNumber, )
 from ..validators import (max_length, )
 from .base import (SerializableObject, SerializerField)
 
 class PackageExternalNumber(SerializableObject):
 
-    xml_mapping = {
-        'code': SerializerField('v1:Code'),
-        'external_number': SerializerField('v1:ExtNumber'),
-    }
+    xml_mapping = OrderedDict([
+        ('code', SerializerField('v1:Code')),
+        ('external_number', SerializerField('v1:ExtNumber')),
+    ])
 
     code: str
     external_number: str

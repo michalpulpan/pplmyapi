@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 from pyPPL.models.package_external_number import PackageExternalNumber
 from pyPPL.models.package_set import PackageSet
 from pyPPL.models.special_delivery import SpecialDelivery
@@ -13,21 +15,21 @@ from ..conf import (Product, CASH_ON_DELIVERY, PARCEL_SHOP_PRODUCTS)
 
 class Package(SerializableObject):
 
-    xml_mapping = {
-        'package_number': SerializerField('v1:PackNumber'),
-        'package_product_type': SerializerField('v1:PackProductType'),
-        'note': SerializerField('v1:Note'),
-        'sender': SerializerField('v1:Sender'),
-        'recipient': SerializerField('v1:Recipient'),
-        'depo_code': SerializerField('v1:DepoCode'),
-        'special_delivery': SerializerField('v1:SpecialDelivery'),
-        'payment_info': SerializerField('v1:PaymentInfo'),
-        'external_numbers': SerializerList('v1:PackagesExtNums', list_item_name='v1:MyApiPackageExtNum'),
-        'package_services': SerializerList('v1:PackageServices', list_item_name='v1:MyApiPackageInServices'),
-        # 'weighted_package_info': SerializerField('v1:WeightedPackageInfo'),
-        'flags': SerializerList('v1:PackageFlags', list_item_name='v1:MyApiFlag'),
-        # 'package_set': SerializerField('v1:PackageSet'),
-    }
+    xml_mapping = OrderedDict([
+        ('package_number', SerializerField('v1:PackNumber')),
+        ('package_product_type', SerializerField('v1:PackProductType')),
+        ('note', SerializerField('v1:Note')),
+        ('depo_code', SerializerField('v1:DepoCode')),
+        ('sender', SerializerField('v1:Sender')),
+        ('recipient', SerializerField('v1:Recipient')),
+        ('special_delivery', SerializerField('v1:SpecialDelivery')),
+        ('payment_info', SerializerField('v1:PaymentInfo')),
+        ('external_numbers', SerializerList('v1:PackagesExtNums', list_item_name='v1:MyApiPackageExtNum')),
+        ('package_services', SerializerList('v1:PackageServices', list_item_name='v1:MyApiPackageInServices')),
+        ('flags', SerializerList('v1:PackageFlags', list_item_name='v1:MyApiFlag')),
+        ('package_set', SerializerField('v1:PackageSet')),
+        ('weighted_package_info', SerializerField('v1:WeightedPackageInfo')),
+    ])
 
     package_number: str = None
     package_product_type: str = None

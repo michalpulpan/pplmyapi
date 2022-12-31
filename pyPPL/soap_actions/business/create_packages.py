@@ -1,3 +1,4 @@
+from pyPPL.models.package import (Package)
 from ..base import (SOAPAction)
 import xmltodict
 import logging
@@ -15,18 +16,14 @@ class SOAPActionCreatePackages(SOAPAction):
     ACTION = 'CreatePackages'
     auth_token = ""
     packages = []
-    soap_body = """
-    <v1:CreateOrders> 
+    soap_body = """<v1:CreatePackages> 
         <v1:Auth>
             <v1:AuthToken>{}</v1:AuthToken> 
         </v1:Auth>
-        <v1:Orders>
-        {}
-        </v1:Orders>
-    </v1:CreateOrders>
-    """
+        <v1:Packages>{}</v1:Packages>
+    </v1:CreatePackages>"""
 
-    def __init__(self, auth_token: str, packages: list) -> None:
+    def __init__(self, auth_token: str, packages: list[Package]) -> None:
         """
         Init SOAP action CreatePackages
         @param packages: list of packages to create
@@ -42,12 +39,11 @@ class SOAPActionCreatePackages(SOAPAction):
         packages_body = ""
         for package in self.packages:
             packages_body += """
-                <v1:MyApiPackageIn>
-                    {}
-                </v1:MyApiPackageIn>
+                <v1:MyApiPackageIn>{}</v1:MyApiPackageIn>
             """.format(
                 package.to_xml()
             )
+        return packages_body
 
     def make_soap_body(self) -> str:
         """
@@ -58,10 +54,15 @@ class SOAPActionCreatePackages(SOAPAction):
             self.make_packages_body(),
         )
 
+
     def parse_success_response(self, response: str) -> object:
         """
         Parse response from SOAP API and return object
 
         """
         response_object = xmltodict.parse(response)
+        # pri
+        print(response)
+        return response_object
+
         # return {'healthy': response_object['IsHealtlyResponse']['IsHealtlyResult']}

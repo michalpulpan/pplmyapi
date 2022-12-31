@@ -1,20 +1,21 @@
+from collections import OrderedDict
 from ..conf import (Country, )
 from ..validators import (max_length, )
 from .base import (SerializableObject, SerializerField, SerializerList, )
 
 class Sender(SerializableObject):
 
-    xml_mapping = {
-        'name': SerializerField('v1:Name'),
-        'city': SerializerField('v1:City'),
-        'street': SerializerField('v1:Street'),
-        'zip_code': SerializerField('v1:ZipCode'),
-        'country': SerializerField('v1:Country'),
-        'phone': SerializerField('v1:Phone'),
-        'email': SerializerField('v1:Email'),
-        'contact': SerializerField('v1:Contact'),
-        'name2': SerializerField('v1:Name2'),
-    }
+    xml_mapping = OrderedDict([
+        ('city', SerializerField('v1:City')),
+        ('contact', SerializerField('v1:Contact')),
+        ('country', SerializerField('v1:Country')),
+        ('email', SerializerField('v1:Email')),
+        ('name', SerializerField('v1:Name')),
+        ('name2', SerializerField('v1:Name2')),
+        ('phone', SerializerField('v1:Phone')),
+        ('street', SerializerField('v1:Street')),
+        ('zip_code', SerializerField('v1:ZipCode')),
+    ])
 
 
     def __init__(
