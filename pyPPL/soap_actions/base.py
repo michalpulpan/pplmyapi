@@ -6,7 +6,8 @@ from datetime import datetime
 import xmltodict
 import json
 import copy
-import xml.etree.ElementTree as ET
+# import xml.etree.ElementTree as ET
+from lxml import etree
 
 from .. import conf
 
@@ -47,8 +48,12 @@ class SOAPAction(ABC):
         self.header()
         self.make_soap_body()
         self.footer()
-        element = ET.XML(self.data)
-        self.data = ET.tostring(element, encoding='unicode')
+
+        # encode to XML in UTF-8 and pretty print
+        data = etree.fromstring(bytes(self.data, encoding='utf-8'))
+        new_xml = etree.tostring(data, xml_declaration=False, encoding="UTF-8", pretty_print=True)
+        self.data = new_xml#.decode('utf-8')
+
         return self.data
 
     @abstractmethod

@@ -101,81 +101,80 @@ packages = [package]
 con.create_packages(packages)
 
 # import requests
+# xml_data = """<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://myapi.ppl.cz/v1"> 
+#         <soapenv:Header/>
+#         <soapenv:Body><v1:CreatePackages> 
+#         <v1:Auth>
+#             <v1:AuthToken>eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJiN19YUXZWZ2dDWDg1YXcwYV9XV3ZCa1pXOXNmaC13MkF1UkNYS0t6M1lzIn0.eyJleHAiOjE2NzI3NTAwNTQsImlhdCI6MTY3Mjc0ODI1NCwianRpIjoiNDYyNjY1ZmMtNmZjZS00YTJkLTgwMDktYTIwMDJkZjgxMmY3IiwiaXNzIjoiaHR0cHM6Ly9hdXRoc2VydmljZS1wcm9kLnBwbC5jei9hdXRoL3JlYWxtcy9ydG1fY3pfbXlhcGkiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiNjBiNmY5YjktYWQzMC00YjAxLWFhYWUtYzIxNTU4ODI2OTlhIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiTXlBcGlDbGllbnQiLCJzZXNzaW9uX3N0YXRlIjoiYzMxZmQ5MzItZTcwOC00ZGMyLWE0MGMtZWJlZmRlZjVkNmE0IiwiYWNyIjoiMSIsInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJkZWZhdWx0LXJvbGVzLXJ0bV9jel9teWFwaSIsIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iLCJteWFwaS51c2VyIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJwcm9maWxlIGVtYWlsIiwic2lkIjoiYzMxZmQ5MzItZTcwOC00ZGMyLWE0MGMtZWJlZmRlZjVkNmE0IiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImVwcyI6eyJkZXBvdCI6eyJpZCI6MTN9LCJjdXN0b21lciI6eyJpZCI6MjA1MDkzN319LCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJoZGs1NTg3NDUifQ.kbpNrnNYAw3XXhm5meaCKaOA0CMbPjC5nncXbvFeqBzGfKf55vnfaxP1vI1x5Y_OcolRF1c_d6wlCDb4Wnat7hGlvpoGkbCkH3JIOs92baj_IoqTqOapvTYqAdZ9z9ih6D8Q9GVoMcXVWKzX4WWmbkoa63PDXlsuEBxjWL9B1Ju2N3ilqcSemBvGCCjpMMXPYefgNv5qgT0NYv8b5USa39AWsm1yINXb_R2z6K1g0dReSCPCqEewGIgWCOSAZ0V2GzxYl2YvAgyMWWbsr1ShE1fGPG8swd3YrljEa_gkNm8Gwrv9SMYiA9GLa-JtviPXMCUmReTZ9r_hC3kp64c4yg</v1:AuthToken> 
+#         </v1:Auth>
+#         <v1:Packages>
+#                 <v1:MyApiPackageIn><v1:PackNumber>123456789</v1:PackNumber><v1:PackProductType>SMARD</v1:PackProductType><v1:Note>test</v1:Note><v1:Recipient>
+#         <v1:City>Hradec Králové</v1:City>
+#         <v1:Country>CZ</v1:Country>
+#         <v1:Email>j.doe@example.com</v1:Email>
+#         <v1:Name>John Doe</v1:Name>
+#         <v1:Phone>123456789</v1:Phone>
+#         <v1:Street>Hlavní 1</v1:Street>
+#         <v1:ZipCode>500 01</v1:ZipCode>
+# </v1:Recipient><v1:SpecialDelivery>
+#         <v1:ParcelShopCode>123456789</v1:ParcelShopCode>
+# </v1:SpecialDelivery><v1:PaymentInfo>
+#         <v1:BankAccount>123456789</v1:BankAccount>
+#         <v1:BankCode>0300</v1:BankCode>
+#         <v1:CodCurrency>CZK</v1:CodCurrency>
+#         <v1:CodPrice>100</v1:CodPrice>
+#         <v1:CodVarSym>123456789</v1:CodVarSym>
+#         <v1:InsurCurrency>CZK</v1:InsurCurrency>
+#         <v1:InsurPrice>100</v1:InsurPrice>
+#         <v1:SpecSymbol>123456789</v1:SpecSymbol>
+# </v1:PaymentInfo><v1:PackagesExtNums>
+#         <v1:MyApiPackageExtNum>
+#                 <v1:Code>B2CO</v1:Code>
+#                 <v1:ExtNumber>123456789</v1:ExtNumber>
+#         </v1:MyApiPackageExtNum>
+#         <v1:MyApiPackageExtNum>
+#                 <v1:Code>CUST</v1:Code>
+#                 <v1:ExtNumber>123456789</v1:ExtNumber>
+#         </v1:MyApiPackageExtNum>
+# </v1:PackagesExtNums><v1:PackageServices>
+#         <v1:MyApiPackageInServices>
+#                 <v1:SvcCode>COD</v1:SvcCode>
+#         </v1:MyApiPackageInServices>
+# </v1:PackageServices><v1:PackageFlags>
+#         <v1:MyApiFlag>
+#                 <v1:Code>CL</v1:Code>
+#                 <v1:Value>true</v1:Value>
+#         </v1:MyApiFlag>
+# </v1:PackageFlags><v1:PackageSet>
+#         <v1:MastepackNumber>123456789</v1:MastepackNumber>
+#         <v1:PackageInSetNr>1</v1:PackageInSetNr>
+#         <v1:PackagesInSet>1</v1:PackagesInSet>
+# </v1:PackageSet><v1:WeightedPackageInfo>
+#         <v1:Weight>10.22</v1:Weight>
+# </v1:WeightedPackageInfo></v1:MyApiPackageIn>
+#             </v1:Packages>
+#     </v1:CreatePackages></soapenv:Body>
+#         </soapenv:Envelope>"""
+
+
+# import xml.dom.minidom
+# temp = xml.dom.minidom.parseString(xml_data)
+# new_xml = temp.toprettyxml()
+# print(new_xml)
+
+# from lxml import etree
+# xmlRootNode = etree.fromstring(xml_data)
+# new_xml = etree.tostring(xmlRootNode, xml_declaration=False, encoding="UTF-8", pretty_print=True)
+# print(new_xml)
+# element = ET.XML(data)
+# data = ET.tostring(element, encoding='utf8')
+
+
 
 # response = requests.post(
 #     'https://myapi.ppl.cz/MyApi.svc',
-#     data="""<?xml version="1.0" encoding="utf-8"?>      
-# <ns0:Envelope
-# 	xmlns:ns0="http://schemas.xmlsoap.org/soap/envelope/"
-# 	xmlns:ns1="http://myapi.ppl.cz/v1">
-# 	<ns0:Header />
-# 	<ns0:Body>
-# 		<ns1:CreatePackages>
-# 			<ns1:Auth>
-# 				<ns1:AuthToken>eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJiN19YUXZWZ2dDWDg1YXcwYV9XV3ZCa1pXOXNmaC13MkF1UkNYS0t6M1lzIn0.eyJleHAiOjE2NzI0MTQ2NDIsImlhdCI6MTY3MjQxMjg0MiwianRpIjoiYWQ1NmMwNTktNmMwZC00OWIzLTg3MmYtOGMzM2IwNGIwMDEyIiwiaXNzIjoiaHR0cHM6Ly9hdXRoc2VydmljZS1wcm9kLnBwbC5jei9hdXRoL3JlYWxtcy9ydG1fY3pfbXlhcGkiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiNjBiNmY5YjktYWQzMC00YjAxLWFhYWUtYzIxNTU4ODI2OTlhIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiTXlBcGlDbGllbnQiLCJzZXNzaW9uX3N0YXRlIjoiMTE4MTZlNDMtNTljMC00NTU5LWI3NjMtNTc0YmY4YjZhY2ZjIiwiYWNyIjoiMSIsInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJkZWZhdWx0LXJvbGVzLXJ0bV9jel9teWFwaSIsIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iLCJteWFwaS51c2VyIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJwcm9maWxlIGVtYWlsIiwic2lkIjoiMTE4MTZlNDMtNTljMC00NTU5LWI3NjMtNTc0YmY4YjZhY2ZjIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImVwcyI6eyJkZXBvdCI6eyJpZCI6MTN9LCJjdXN0b21lciI6eyJpZCI6MjA1MDkzN319LCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJoZGs1NTg3NDUifQ.g18AfXGDExgU0E6IdEsQ5jWnW9cxo6tCGiSjy3xR8cffxNITfuD9sqeuPXrkpqZJyC6b-Lqi4cPmOsZp5GYqqauoB6iHs7L1qH1OCCqb3bB4G7DAghwADO2LHXQ7Sn9RJytLNIeNH71fTuHAKRLVAq_DacRJcdEATplpF-Xgc3IYDiaaC6W4NK4mnvK3cO5S5gZf3yEIx191G6CPzH6I-yZ8hgeI-YzJ3DNH03WL5pGCHG544B8k3tp5B-4m5kFMEgO7rsr08tZqYNGxOb8CUPgHlUl7mfcCO_RcDivTaItFv8cblKNkSnroofFm_hfKhoFfBzahTZXLMLYjmTNh7g</ns1:AuthToken>
-# 			</ns1:Auth>
-# 			<ns1:Packages>
-# 				<ns1:MyApiPackageIn>
-# 					<ns1:PackNumber>123456789</ns1:PackNumber>
-# 					<ns1:PackProductType>SMARD</ns1:PackProductType>
-# 					<ns1:Note>test</ns1:Note>
-# 					<ns1:Recipient>
-# 						<ns1:City>Hradec Králové</ns1:City>
-# 						<ns1:Country>CZ</ns1:Country>
-# 						<ns1:Email>j.doe@example.com</ns1:Email>
-# 						<ns1:Name>John Doe</ns1:Name>
-# 						<ns1:Phone>123456789</ns1:Phone>
-# 						<ns1:Street>Hlavní 1</ns1:Street>
-# 						<ns1:ZipCode>500 01</ns1:ZipCode>
-# 					</ns1:Recipient>
-# 					<ns1:SpecialDelivery>
-# 						<ns1:ParcelShopCode>123456789</ns1:ParcelShopCode>
-# 					</ns1:SpecialDelivery>
-# 					<ns1:PaymentInfo>
-# 						<ns1:BankAccount>123456789</ns1:BankAccount>
-# 						<ns1:BankCode>0300</ns1:BankCode>
-# 						<ns1:CodCurrency>CZK</ns1:CodCurrency>
-# 						<ns1:CodPrice>100</ns1:CodPrice>
-# 						<ns1:CodVarSym>123456789</ns1:CodVarSym>
-# 						<ns1:InsurCurrency>CZK</ns1:InsurCurrency>
-# 						<ns1:InsurPrice>100</ns1:InsurPrice>
-# 						<ns1:SpecSymbol>123456789</ns1:SpecSymbol>
-# 					</ns1:PaymentInfo>
-# 					<ns1:PackagesExtNums>
-# 						<ns1:MyApiPackageExtNum>
-# 							<ns1:Code>B2CO</ns1:Code>
-# 							<ns1:ExtNumber>123456789</ns1:ExtNumber>
-# 						</ns1:MyApiPackageExtNum>
-# 						<ns1:MyApiPackageExtNum>
-# 							<ns1:Code>CUST</ns1:Code>
-# 							<ns1:ExtNumber>123456789</ns1:ExtNumber>
-# 						</ns1:MyApiPackageExtNum>
-# 					</ns1:PackagesExtNums>
-# 					<ns1:PackageServices>
-# 						<ns1:MyApiPackageInServices>
-# 							<ns1:SvcCode>COD</ns1:SvcCode>
-# 						</ns1:MyApiPackageInServices>
-# 					</ns1:PackageServices>
-# 					<ns1:PackageFlags>
-# 						<ns1:MyApiFlag>
-# 							<ns1:Code>CL</ns1:Code>
-# 							<ns1:Value>true</ns1:Value>
-# 						</ns1:MyApiFlag>
-# 					</ns1:PackageFlags>
-# 					<ns1:PackageSet>
-# 						<ns1:MastepackNumber>123456789</ns1:MastepackNumber>
-# 						<ns1:PackageInSetNr>1</ns1:PackageInSetNr>
-# 						<ns1:PackagesInSet>1</ns1:PackagesInSet>
-# 					</ns1:PackageSet>
-# 					<ns1:WeightedPackageInfo>
-# 						<ns1:Weight>10.22</ns1:Weight>
-# 					</ns1:WeightedPackageInfo>
-# 				</ns1:MyApiPackageIn>
-# 			</ns1:Packages>
-# 		</ns1:CreatePackages>
-# 	</ns0:Body>
-# </ns0:Envelope>""",
-#     headers={'Content-Type': 'text/xml; charset=utf-8', 'Cache-Control': 'no-cache', 'SOAPAction': 'http://myapi.ppl.cz/v1/IMyApi2/CreatePackages', 'Authorization': f"bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJiN19YUXZWZ2dDWDg1YXcwYV9XV3ZCa1pXOXNmaC13MkF1UkNYS0t6M1lzIn0.eyJleHAiOjE2NzI0MTQ2NDIsImlhdCI6MTY3MjQxMjg0MiwianRpIjoiYWQ1NmMwNTktNmMwZC00OWIzLTg3MmYtOGMzM2IwNGIwMDEyIiwiaXNzIjoiaHR0cHM6Ly9hdXRoc2VydmljZS1wcm9kLnBwbC5jei9hdXRoL3JlYWxtcy9ydG1fY3pfbXlhcGkiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiNjBiNmY5YjktYWQzMC00YjAxLWFhYWUtYzIxNTU4ODI2OTlhIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiTXlBcGlDbGllbnQiLCJzZXNzaW9uX3N0YXRlIjoiMTE4MTZlNDMtNTljMC00NTU5LWI3NjMtNTc0YmY4YjZhY2ZjIiwiYWNyIjoiMSIsInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJkZWZhdWx0LXJvbGVzLXJ0bV9jel9teWFwaSIsIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iLCJteWFwaS51c2VyIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJwcm9maWxlIGVtYWlsIiwic2lkIjoiMTE4MTZlNDMtNTljMC00NTU5LWI3NjMtNTc0YmY4YjZhY2ZjIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImVwcyI6eyJkZXBvdCI6eyJpZCI6MTN9LCJjdXN0b21lciI6eyJpZCI6MjA1MDkzN319LCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJoZGs1NTg3NDUifQ.g18AfXGDExgU0E6IdEsQ5jWnW9cxo6tCGiSjy3xR8cffxNITfuD9sqeuPXrkpqZJyC6b-Lqi4cPmOsZp5GYqqauoB6iHs7L1qH1OCCqb3bB4G7DAghwADO2LHXQ7Sn9RJytLNIeNH71fTuHAKRLVAq_DacRJcdEATplpF-Xgc3IYDiaaC6W4NK4mnvK3cO5S5gZf3yEIx191G6CPzH6I-yZ8hgeI-YzJ3DNH03WL5pGCHG544B8k3tp5B-4m5kFMEgO7rsr08tZqYNGxOb8CUPgHlUl7mfcCO_RcDivTaItFv8cblKNkSnroofFm_hfKhoFfBzahTZXLMLYjmTNh7g", "Host": "myapi.ppl.cz", "Accept-Encoding": "gzip, deflate", "Connection": "keep-alive", "Content-Length": "0"},
+#     data=new_xml,
+#     headers={'Content-Type': 'text/xml; charset=utf-8', 'SOAPAction': 'http://myapi.ppl.cz/v1/IMyApi2/CreatePackages'},
 #     timeout=10,
 # )
 
