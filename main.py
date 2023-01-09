@@ -98,7 +98,12 @@ package = Package(
 # create packages
 packages = [package]
 
-con.create_packages(packages)
+# con.create_packages(packages)
+
+con.get_packages(
+    # package_numbers=['123456789'],
+    date=(datetime(2021, 1, 1), datetime(2021, 1, 31))
+)
 
 # import requests
 # xml_data = """<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://myapi.ppl.cz/v1"> 

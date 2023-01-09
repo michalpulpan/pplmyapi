@@ -3,6 +3,7 @@ import requests
 import requests.adapters
 from abc import (ABC, abstractmethod, )
 from datetime import datetime
+from typing import Tuple
 import xmltodict
 import json
 import copy
@@ -16,6 +17,10 @@ from .soap_actions.operational.version import SOAPActionVersion
 # business SOAP actions
 from .soap_actions.business.create_orders import SOAPActionCreateOrders
 from .soap_actions.business.create_packages import SOAPActionCreatePackages
+from .soap_actions.business.cancel_package import SOAPActionCancelPackage
+from .soap_actions.business.get_packages import SOAPActionGetPackages
+
+
 
 
 from . import conf
@@ -79,4 +84,18 @@ class SOAPConnector:
             return None
         create_packages = SOAPActionCreatePackages(self.AUTH_TOKEN, packages)
         response = create_packages()
+        return response
+
+    def cancel_package(self, pack_number: str) -> list:
+        if not self.login():
+            return None
+        cancel_packages = SOAPActionCancelPackage(self.AUTH_TOKEN, pack_number)
+        response = cancel_packages()
+        return response
+
+    def get_packages(self, package_numbers: list[str] = None, date: Tuple[datetime, datetime] = None) -> list:
+        if not self.login():
+            return None
+        get_packages = SOAPActionGetPackages(self.AUTH_TOKEN, package_numbers = package_numbers, date = date)
+        response = get_packages()
         return response

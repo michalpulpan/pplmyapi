@@ -31,7 +31,7 @@ class SOAPAction(ABC):
         Make SOAP header                        
         """
         self.data += f"""<?xml version="1.0" encoding="utf-8"?>
-        <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://myapi.ppl.cz/v1"> 
+        <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v1="http://myapi.ppl.cz/v1" xmlns:arr="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
         <soapenv:Header/>
         <soapenv:Body>"""
     def footer(self) -> None:
@@ -93,9 +93,9 @@ class SOAPAction(ABC):
             raise ValueError('data must be set')
         
         self.make_data()
-
+        logging.debug(f"")
         logging.debug(f"Calling SOAP action {self.ACTION} with data: {self.data} and headers: {self.HEADERS} and URL: {self.URL}")
-        
+        logging.debug(f"")
         # print(self.data)
         response = requests.post(
             self.URL,
