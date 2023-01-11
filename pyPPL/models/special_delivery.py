@@ -9,6 +9,10 @@ class SpecialDelivery(SerializableObject):
         ('parcel_shop_code', SerializerField('v1:ParcelShopCode')),
     ])
 
+    json_mapping = OrderedDict([
+        ('parcel_shop_code', SerializerField('parcelShopCode')),
+    ])
+
     parcel_shop_code: str = None
 
     def __init__(

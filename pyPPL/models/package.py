@@ -9,9 +9,13 @@ from pyPPL.models.recipient import Recipient
 from pyPPL.models.payment_info import PaymentInfo
 from pyPPL.models.sender import Sender
 from pyPPL.models.package_flag import PackageFlag
+from pyPPL.models.insurance import Insurance
+from pyPPL.models.dormant import Dormant
+
 from ..validators import (max_length, )
 from .base import (SerializableObject, SerializerField, SerializerList, )
-from ..conf import (Product, CASH_ON_DELIVERY, PARCEL_SHOP_PRODUCTS)
+from ..conf import (Product, CASH_ON_DELIVERY, PARCEL_SHOP_PRODUCTS, Services, Age, DELIVERY_DOMESTIC, DELIVERY_INTERNATIONAL,)
+from typing import Union
 
 class Package(SerializableObject):
 
@@ -31,6 +35,24 @@ class Package(SerializableObject):
         ('weighted_package_info', SerializerField('v1:WeightedPackageInfo')),
     ])
 
+    json_mapping = OrderedDict([
+        ('package_number', SerializerField('referenceId')),
+        ('package_product_type', SerializerField('productType')),
+        ('note', SerializerField('note')),
+        ('age_check', SerializerField('ageCheck')),
+        ('depo_code', SerializerField('depot')),
+        ('package_set', SerializerField('shipmentSet')),
+        ('sender', SerializerField('sender')),
+        ('recipient', SerializerField('recipient')),
+        ('dormant', SerializerField('dormant')),
+        ('special_delivery', SerializerField('specificDelivery')),
+        ('payment_info', SerializerField('cashOnDelivery')),
+        ('external_numbers', SerializerList('externalNumbers')),
+        ('package_services', SerializerList('services')),
+        # ('flags', SerializerList('v1:PackageFlags', list_item_name='v1:MyApiFlag')), # DOESNT IMPLEMENT
+        ('weighted_package_info', SerializerField('weighedShipmentInfo')),
+    ])
+
     package_number: str = None
     package_product_type: str = None
     note: str = None
@@ -42,8 +64,11 @@ class Package(SerializableObject):
     external_numbers: list[PackageExternalNumber] = []
     package_services: list[PackageService] = []
     flags: list[PackageFlag] = []
-    weighted_package_info = None
-    package_set = None
+    weighted_package_info: WeightedPackageInfo = None
+    package_set: PackageSet = None
+    age_check: Age = None
+    dormant: Dormant = None
+    insurance: Insurance = None
 
 
     def __init__(
@@ -60,7 +85,10 @@ class Package(SerializableObject):
         package_services: list[PackageService] = [],
         flags: list[PackageFlag] = [],
         weighted_package_info: WeightedPackageInfo = None,
-        package_set: PackageSet = None 
+        package_set: PackageSet = None,
+        age_check: Age = None,
+        dormant: Dormant = None, # TODO: create type for dormant
+        insurance: Insurance = None, # TODO: create type for insurance
         ) -> None:
         
         # TODO: control if product_type has cash on delivery and payment_info provided
@@ -98,3 +126,17 @@ class Package(SerializableObject):
             # create a new package set containing this package only
             package_set = PackageSet(package_number)
         self.package_set = package_set
+
+        if age_check is not None:
+            self.age_check = age_check
+
+        if insurance is not None:
+            # insurance on label is provided only for:
+            # - domestic parcels with value > 50 000 CZK
+            # - international parcels with value > 100 000 CZK
+            if (package_product_type in DELIVERY_DOMESTIC and insurance.value > 50000) or \
+                (package_product_type in DELIVERY_INTERNATIONAL and insurance.value > 100000):
+                    self.insurance = insurance
+
+        if dormant is not None:
+            self.dormant = dormant

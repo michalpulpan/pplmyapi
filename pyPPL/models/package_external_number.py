@@ -10,6 +10,11 @@ class PackageExternalNumber(SerializableObject):
         ('external_number', SerializerField('v1:ExtNumber')),
     ])
 
+    json_mapping = OrderedDict([
+        ('code', SerializerField('code')),
+        ('external_number', SerializerField('externalNumber')),
+    ])
+
     code: str
     external_number: str
 

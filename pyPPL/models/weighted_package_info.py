@@ -9,6 +9,10 @@ class WeightedPackageInfo(SerializableObject):
         ('weight', SerializerField('v1:Weight')),
     ])
 
+    json_mapping = OrderedDict([
+        ('weight', SerializerField('weight')),
+    ])
+
     weight: float = None
 
     def __init__(

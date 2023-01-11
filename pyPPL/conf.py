@@ -234,6 +234,31 @@ PARCEL_SHOP_PRODUCTS = [
     Product.PPL_PARCEL_SMART_EUROPE_COD,
 ]
 
+DELIVERY_DOMESTIC = [
+    Product.PPL_PARCEL_CZ_BUSINESS,
+    Product.PPL_PARCEL_CZ_BUSINESS_COD,
+    Product.PPL_PARCEL_CZ_MORNING_PACKAGE,
+    Product.PPL_PARCEL_CZ_MORNING_PACKAGE_COD,
+    Product.PPL_PARCEL_CZ_PRIVATE,
+    Product.PPL_PARCEL_CZ_PRIVATE_COD,
+    Product.PPL_PARCEL_CZ_RETURN,
+    Product.PPL_PARCEL_CZ_SMART,
+    Product.PPL_PARCEL_CZ_SMART_COD,
+
+]
+
+DELIVERY_INTERNATIONAL = [
+    Product.PPL_PARCEL_CZ_BUSINESS,
+    Product.PPL_PARCEL_CZ_BUSINESS_COD,
+    Product.PPL_PARCEL_CONNECT,
+    Product.PPL_PARCEL_CONNECT_COD,
+    Product.PPL_PARCEL_SMART_EUROPE,
+    Product.PPL_PARCEL_SMART_EUROPE_COD,
+    Product.PPL_PARCEL_IMPORT,
+    Product.PPL_PARCEL_RETURN_CONNECT_IMPORT,
+    Product.PPL_PARCEL_RETURN_CONNECT_EU,
+]
+
 class PackageStatus(Enum2):
     DATA_SHIPMENT = 900
     PICKED_UP_FROM_SENDER = 150
@@ -306,7 +331,31 @@ class Services(Enum2):
     PUBC = 'PUBC' # pickup by driver
     DPOD = 'DPOD' # additional delivery attempt
 
+class Age(Enum2):
+    A15 = 'A15'
+    A18 = 'A18'
+
 class AddressType(Enum2):
     BP = 'BP' # address to return undelivered packages
     RETD = 'RETD' # address to return return packages
     RETC = 'RETC' # address to return return connect packages
+
+
+class LabelReturnChanel(Enum2):
+    EMAIL = 'Email'
+    FTP = 'Ftp'
+    HTTP = 'Http'
+
+class LabelSettingModel(Enum2):
+    PDF = 'Pdf'
+    ZPL = 'Zpl'
+    PNG = 'Png'
+    JPG = 'Jpg'
+    SVG = 'Svg'
+
+
+class ImportStatus(Enum2):
+    ACCEPTED = 'Accepted'
+    INPROCESS = 'InProcess'
+    COMPLETE = 'Complete'
+    ERROR = 'Error'

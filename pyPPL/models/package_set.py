@@ -11,6 +11,12 @@ class PackageSet(SerializableObject):
         ('total_packages', SerializerField('v1:PackagesInSet')),
     ])
 
+    json_mapping = OrderedDict([
+        # ('master_number', SerializerField('v1:MastepackNumber')),
+        # ('current_number_in_set', SerializerField('v1:PackageInSetNr')),
+        ('total_packages', SerializerField('numberOfShipments')),
+    ])
+
     master_number: str = None
     current_number_in_set: int = 1
     total_packages: int = 1

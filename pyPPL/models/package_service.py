@@ -8,7 +8,12 @@ class PackageService(SerializableObject):
     xml_mapping = OrderedDict([
         ('code', SerializerField('v1:SvcCode')),
     ])
-    code: str
+    json_mapping = OrderedDict([
+        ('code', SerializerField('code')),
+    ])
+
+
+    code: str = None
 
     def __init__(
         self,

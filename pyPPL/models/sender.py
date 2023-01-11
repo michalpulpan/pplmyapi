@@ -17,6 +17,18 @@ class Sender(SerializableObject):
         ('zip_code', SerializerField('v1:ZipCode')),
     ])
 
+    json_mapping = OrderedDict([
+        ('city', SerializerField('city')),
+        ('contact', SerializerField('contact')),
+        ('country', SerializerField('country')),
+        ('email', SerializerField('email')),
+        ('name', SerializerField('name')),
+        ('name2', SerializerField('name2')),
+        ('phone', SerializerField('phone')),
+        ('street', SerializerField('street')),
+        ('zip_code', SerializerField('zipCode')),
+    ])
+
 
     def __init__(
         self,

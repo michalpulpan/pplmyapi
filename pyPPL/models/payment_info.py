@@ -18,6 +18,20 @@ class PaymentInfo(SerializableObject):
         ('swift', SerializerField('v1:Swift')),
     ])
 
+    json_mapping = OrderedDict([
+        ('bank_account', SerializerField('account')),
+        ('bank_code', SerializerField('bankCode')),
+        ('cod_currency', SerializerField('codCurrency')),
+        ('cod_price', SerializerField('codPrice')),
+        ('cod_vs', SerializerField('codVarSym')),
+        ('iban', SerializerField('IBAN')),
+        # ('insurance_currency', SerializerField('v1:InsurCurrency')),
+        # ('insurance_price', SerializerField('v1:InsurPrice')),
+        ('specific_symbol', SerializerField('specSymbol')),
+        ('swift', SerializerField('Swift')),
+    ])
+
+
     cod_price: float = None
     cod_currency: str = None
     cod_vs: str = None

@@ -10,6 +10,10 @@ class PackageFlag(SerializableObject):
         ('value', SerializerField('v1:Value')),
     ])
 
+    json_mapping = OrderedDict([
+    ])
+
+   
 
     code: str
     value: str
