@@ -1,7 +1,7 @@
 import logging
 from time import sleep
 from pyPPL.models.package import Package
-from pyPPL.conf import (LabelReturnChanel, LabelSettingModel, ImportStatus, )
+from pyPPL.conf import (LabelReturnChanel, LabelSettingModel, ImportStatus, LABEL_SERVICES )
 import requests
 import json
 import base64
@@ -9,6 +9,26 @@ import base64
 class RESTActionGetLabels:
     
     url = 'https://api.dhl.com/ecs/ppl/myapi2/shipment/batch'
+
+    def keep_or_remove_services(self, package: Package):
+        svc = package.package_services
+
+        if svc is None or len(svc) == 0:
+            return
+        
+        new_svc = []
+        for s in svc:
+            # validate service code againts LABEL_SERVICES list of enum item
+            if s.get_type() in LABEL_SERVICES:
+                # remove service from package
+                new_svc.append(s)
+        package.package_services = new_svc
+        return package
+
+
+    def validate_package(self, package: Package):
+        return self.keep_or_remove_services(package)
+
 
     def __init__(self, 
         token: str = None,
@@ -25,6 +45,9 @@ class RESTActionGetLabels:
         self.return_chanel_format = return_chanel_format
         self.return_chanel_dpi = return_chanel_dpi
         
+        for package in self.packages:
+            package = self.validate_package(package)
+
         if token is None:
             raise Exception('Token is required')
 
@@ -34,6 +57,7 @@ class RESTActionGetLabels:
         else:
             self.session = session
 
+        
 
         self.label_settings = {
             "format": return_chanel_format.value,
@@ -127,10 +151,8 @@ class RESTActionGetLabels:
 
         # get labels for packages - call api
 
-        data = {
-            "labelSettings": self.label_settings,
-            "shipments": [package.to_json() for package in self.packages],
-        }
+        print('packages', [package.to_json() for package in self.packages])
+
 
         response = self.session.post(
             self.url,

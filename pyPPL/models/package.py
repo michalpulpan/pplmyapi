@@ -87,11 +87,9 @@ class Package(SerializableObject):
         weighted_package_info: WeightedPackageInfo = None,
         package_set: PackageSet = None,
         age_check: Age = None,
-        dormant: Dormant = None, # TODO: create type for dormant
-        insurance: Insurance = None, # TODO: create type for insurance
+        dormant: Dormant = None, 
+        insurance: Insurance = None, 
         ) -> None:
-        
-        # TODO: control if product_type has cash on delivery and payment_info provided
         
         self.note = max_length(note, 300)
         self.package_number = max_length(package_number, 20)

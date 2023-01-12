@@ -96,7 +96,7 @@ class RESTConnector:
             raise Exception('No packages provided')
 
         # get labels for packages - call api
-
+        
         get_labels = RESTActionGetLabels(
             token = self.get_access_token(),
             packages = packages,
@@ -106,10 +106,10 @@ class RESTConnector:
             return_chanel_dpi = return_chanel_dpi,
             session = self.session,
         )
-        # response = get_labels()
+        
         response = get_labels()
 
-        if file_path and file_name:
+        if file_path and file_name and return_chanel_type == LabelReturnChanel.HTTP:
             # Base64 to PDF: https://base64.guru/developers/python/examples/decode-pdf
             
             # Create a file path if it does not exist

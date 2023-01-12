@@ -331,6 +331,13 @@ class Services(Enum2):
     PUBC = 'PUBC' # pickup by driver
     DPOD = 'DPOD' # additional delivery attempt
 
+LABEL_SERVICES = [
+    # Services.A15, # apparently not supported but it's in docs..
+    # Services.A18, # apparently not supported but it's in docs..
+    Services.PUBC,
+    Services.DPOD,
+]
+
 class Age(Enum2):
     A15 = 'A15'
     A18 = 'A18'

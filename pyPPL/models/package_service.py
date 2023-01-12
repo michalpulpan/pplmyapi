@@ -14,6 +14,7 @@ class PackageService(SerializableObject):
 
 
     code: str = None
+    type: Services = None
 
     def __init__(
         self,
@@ -23,5 +24,9 @@ class PackageService(SerializableObject):
         if code not in Services:
             raise ValueError(f'Invalid code: {code} for package services')
         self.code = code.value
+        self.type = code
+
+    def get_type (self) -> Services:
+        return self.type
 
         

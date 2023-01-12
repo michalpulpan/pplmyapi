@@ -93,7 +93,6 @@ class SerializableObject:
             else:
                 json_dict[v.name] = self.__dict__[k]
         return json_dict
-        # return json.dumps(json_dict, indent=4)
 
 class MappingType(Enum):
     """
