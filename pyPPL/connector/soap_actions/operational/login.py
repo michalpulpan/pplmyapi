@@ -2,11 +2,11 @@ from ..base import (SOAPAction)
 
 import xmltodict
 import logging
-from pyPPL.conf import (
-    SOAP_CUST_ID,
-    SOAP_PASSWORD,
-    SOAP_USERNAME,
-)
+# from pyPPL.conf import (
+#     SOAP_CUST_ID,
+#     SOAP_PASSWORD,
+#     SOAP_USERNAME,
+# )
 
 
 logger = logging.getLogger(__name__)
@@ -22,7 +22,10 @@ class SOAPActionLogin(SOAPAction):
             </v1:Auth> 
         </v1:Login>"""
 
-    def __init__(self, ) -> None:
+    def __init__(self, cust_id: str, password: str, username: str) -> None:
+        self.cust_id = cust_id
+        self.password = password
+        self.username = username
         super().__init__()
 
     def make_soap_body(self) -> str:
@@ -31,9 +34,9 @@ class SOAPActionLogin(SOAPAction):
         input data: CustId, Password, UserName into soap_body
         """
         self.data += self.soap_body.format(
-            SOAP_CUST_ID,
-            SOAP_PASSWORD,
-            SOAP_USERNAME,
+            self.cust_id,
+            self.password,
+            self.username,
         )
 
     def parse_success_response(self, response: str) -> object:

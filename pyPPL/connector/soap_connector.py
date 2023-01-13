@@ -26,13 +26,22 @@ from pyPPL.conf import (
 logger = logging.getLogger(__name__)
 
 class SOAPConnector:
-    AUTH_TOKEN = None
-    AUTH_TOKEN_TIMESTAMP = None
-    AUTH_TOKEN_MAX_AGE = SOAP_AUTH_TOKEN_MAX_AGE
+    auth_token = None
+    auth_token_timestamp = None
+    auth_token_max_age = SOAP_AUTH_TOKEN_MAX_AGE
 
 
-    def __init__(self) -> None:
-        pass
+    def __init__(
+        self,
+        cust_id: str,
+        username: str,
+        password: str,
+        auth_token_max_age: int,
+    ) -> None:
+        self.cust_id = cust_id
+        self.username = username
+        self.password = password
+        self.auth_token_max_age = auth_token_max_age
 
     def call():
         pass
@@ -51,18 +60,22 @@ class SOAPConnector:
             
     def login(self) -> bool:
 
-        if self.AUTH_TOKEN is not None and self.AUTH_TOKEN_TIMESTAMP is not None:
-            if datetime.now().timestamp() - self.AUTH_TOKEN_TIMESTAMP < self.AUTH_TOKEN_MAX_AGE:
+        if self.auth_token is not None and self.auth_token_timestamp is not None:
+            if datetime.now().timestamp() - self.auth_token_timestamp < self.auth_token_max_age:
                 return True
         # reset token and timestamp
-        self.AUTH_TOKEN = None
-        self.AUTH_TOKEN_TIMESTAMP = None
+        self.auth_token = None
+        self.auth_token_timestamp = None
 
-        login = SOAPActionLogin()
+        login = SOAPActionLogin(
+            cust_id=self.cust_id,
+            username=self.username,
+            password=self.password,
+        )
         response = login()
         if 'token' in response:
-            self.AUTH_TOKEN = response['token']
-            self.AUTH_TOKEN_TIMESTAMP = datetime.now().timestamp()
+            self.auth_token = response['token']
+            self.auth_token_timestamp = datetime.now().timestamp()
             return True
         return False
 
@@ -80,20 +93,20 @@ class SOAPConnector:
     def create_packages(self, packages: list[Package]) -> list:
         if not self.login():
             return None
-        create_packages = SOAPActionCreatePackages(self.AUTH_TOKEN, packages)
+        create_packages = SOAPActionCreatePackages(self.auth_token, packages)
         response = create_packages()
         return response
 
     def cancel_package(self, pack_number: str) -> list:
         if not self.login():
             return None
-        cancel_packages = SOAPActionCancelPackage(self.AUTH_TOKEN, pack_number)
+        cancel_packages = SOAPActionCancelPackage(self.auth_token, pack_number)
         response = cancel_packages()
         return response
 
     def get_packages(self, package_numbers: list[str] = None, date: Tuple[datetime, datetime] = None) -> list:
         if not self.login():
             return None
-        get_packages = SOAPActionGetPackages(self.AUTH_TOKEN, package_numbers = package_numbers, date = date)
+        get_packages = SOAPActionGetPackages(self.auth_token, package_numbers = package_numbers, date = date)
         response = get_packages()
         return response

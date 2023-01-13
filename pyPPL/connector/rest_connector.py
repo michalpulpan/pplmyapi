@@ -14,8 +14,8 @@ import os
 from pyPPL.conf import (
     REST_OAUTH2_TOKEN_URL,
     REST_GRANT_TYPE,
-    REST_CLIENT_ID,
-    REST_CLIENT_SECRET,
+    # REST_CLIENT_ID,
+    # REST_CLIENT_SECRET,
 )
 
 logger = logging.getLogger(__name__)
@@ -23,12 +23,18 @@ logger = logging.getLogger(__name__)
 class RESTConnector:
     TOKEN_URL = REST_OAUTH2_TOKEN_URL
     GRANT_TYPE = REST_GRANT_TYPE
-    CLIENT_ID = REST_CLIENT_ID
-    CLIENT_SECRET = REST_CLIENT_SECRET
+    client_id = None
+    client_secret = None
     
     ACCESS_TOKEN = None
 
-    def __init__(self) -> None:
+    def __init__(
+        self,
+        client_id: str,
+        client_secret: str,
+    ) -> None:
+        self.client_id = client_id
+        self.client_secret = client_secret
         self.session = requests.Session()
         self.get_access_token()
         
@@ -41,8 +47,8 @@ class RESTConnector:
             self.TOKEN_URL,
             data = {
                 'grant_type': self.GRANT_TYPE,
-                'client_id': self.CLIENT_ID,
-                'client_secret': self.CLIENT_SECRET,
+                'client_id': self.client_id,
+                'client_secret': self.client_secret,
                 'scope': 'myapi2',
             }
         )

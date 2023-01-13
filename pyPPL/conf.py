@@ -4,18 +4,18 @@ from enum import Enum
 
 load_dotenv()
 
-SOAP_API_URL = os.getenv('SOAP_API_URL')
-REST_API_URL = os.getenv('REST_API_URL')
-REST_OAUTH2_TOKEN_URL = os.getenv('REST_OAUTH2_TOKEN_URL')
-REST_GRANT_TYPE = os.getenv('REST_GRANT_TYPE')
-REST_CLIENT_ID = os.getenv('REST_CLIENT_ID')
-REST_CLIENT_SECRET = os.getenv('REST_CLIENT_SECRET')
-SOAP_CUST_ID = os.getenv('SOAP_CUST_ID')
-SOAP_PASSWORD = os.getenv('SOAP_PASSWORD')
-SOAP_USERNAME = os.getenv('SOAP_USERNAME')
-SOAP_ACTION_URL = os.getenv('SOAP_ACTION_URL')
-SOAP_API_URL = os.getenv('SOAP_API_URL')
-SOAP_AUTH_TOKEN_MAX_AGE = int(os.getenv('SOAP_AUTH_TOKEN_MAX_AGE'))
+SOAP_API_URL = 'https://myapi.ppl.cz/MyApi.svc' # os.getenv('SOAP_API_URL')
+SOAP_ACTION_URL = 'http://myapi.ppl.cz/v1/IMyApi2/' # os.getenv('SOAP_ACTION_URL')
+REST_API_URL = 'https://api.dhl.com/ecs/ppl/myapi2/' # os.getenv('REST_API_URL')
+REST_OAUTH2_TOKEN_URL = 'https://api.dhl.com/ecs/ppl/myapi2/login/getAccessToken' # os.getenv('REST_OAUTH2_TOKEN_URL')
+REST_GRANT_TYPE = 'client_credentials' # os.getenv('REST_GRANT_TYPE')
+# REST_CLIENT_ID = None # os.getenv('REST_CLIENT_ID')
+# REST_CLIENT_SECRET = None # os.getenv('REST_CLIENT_SECRET')
+# SOAP_CUST_ID = None # os.getenv('SOAP_CUST_ID')
+# SOAP_PASSWORD = None # os.getenv('SOAP_PASSWORD')
+# SOAP_USERNAME = None # os.getenv('SOAP_USERNAME')
+# SOAP_API_URL = 'https://myapi.ppl.cz/MyApi.svc' # os.getenv('SOAP_API_URL')
+SOAP_AUTH_TOKEN_MAX_AGE = 1800 # int(os.getenv('SOAP_AUTH_TOKEN_MAX_AGE'))
 
 
 SOAP_HEADERS = {

@@ -11,11 +11,11 @@ from pyPPL.models import (
     PackageExternalNumber,
     Package,
 )
-from pyPPL.connector import (SOAPConnector, RESTConnector)
+from pyPPL.ppl import PPL
 import logging.config
 from datetime import datetime
 from os import path
-# from pyPPL.models.package import Package
+import os
 
 
 CONFIG_DIR = "./config"
@@ -35,14 +35,22 @@ def setup_logging():
 setup_logging()
 
 # login = SOAPActionLogin()
+
 # login()
-con = SOAPConnector()
+ppl = PPL(
+    rest_client_id=os.getenv('REST_CLIENT_ID'),
+    rest_client_secret=os.getenv('REST_CLIENT_SECRET'),
+    soap_customer_id=os.getenv('SOAP_CUST_ID'),
+    soap_username=os.getenv('SOAP_USERNAME'),
+    soap_password=os.getenv('SOAP_PASSWORD'),
+)
+con = ppl.soap_connector()
 # login 
-# con.login()
+con.login()
 # check health
-# con.is_healty()
+con.is_healty()
 # get version
-# con.version()
+con.version()
 
 
 # create packages
@@ -254,18 +262,21 @@ package3 = Package(
     # )
 )
 
-
-
-# create packages
-packages = [package3]
-
-# create rest_connector
-rest_con = RESTConnector()
-
-# create rest_action
-rest_con.get_labels(
-    packages=packages,
-    file_path = './out_test',
-    file_name = 'test3.pdf',
+con.create_packages(
+    packages=[package3],
 )
+
+
+# # create packages
+# packages = [package3]
+
+# # create rest_connector
+# rest_con = ppl.rest_connector
+
+# # create rest_action
+# rest_con.get_labels(
+#     packages=packages,
+#     file_path = './out_test',
+#     file_name = 'test3.pdf',
+# )
 

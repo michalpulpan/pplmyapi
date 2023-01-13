@@ -1,4 +1,4 @@
-# pyPPL 📦📦
+# 📦📦 pyPPL 
 Czech PPL (Professional Parcel Logistic) API wrapper written in Python. Helps you to communicate with PPL myAPI without worring about constructing your own SOAP headers, bodies or even fetching access tokens. All (hopefully) done for you in the background.
 
 # Install it from PyPI
@@ -7,28 +7,160 @@ pip install pyPPL
 ```
 
 ## Usage
+This is still a work in progress, so the API might change in the future. However, the basic usage is as follows:
+1. Create a `PPL` instance with your credentials
+2. obtain a `SOAPConnector` instance from the `PPL` instance or `RESTConnector` instance (or you can create your own, but that's not recommended)
+3. use the `SOAPConnector` instance to communicate with the PPL SOAP API (myAPI)
+4. use the `RESTConnector` instance to communicate with the PPL REST API (myAPI2)
 
-1. Create a `.env` file in the root of your project and fill it with your credentials. You can find an example below.
-### `.env` example
-```raw
-REST_API_URL=https://api.dhl.com/ecs/ppl/myapi2/ # keep this one
-REST_OAUTH2_TOKEN_URL=https://api.dhl.com/ecs/ppl/myapi2/login/getAccessToken # keep this one
-REST_GRANT_TYPE=client_credentials
-REST_CLIENT_ID=12345 # <-- change this one
-REST_CLIENT_SECRET=your_secret # <-- change this one
-SOAP_CUST_ID=12345 # <-- change this one
-SOAP_PASSWORD=your_password # <-- change this one
-SOAP_USERNAME=your_username # <-- change this one
-SOAP_ACTION_URL=http://myapi.ppl.cz/v1/IMyApi2/ # keep this one
-SOAP_API_URL=https://myapi.ppl.cz/MyApi.svc # keep this one
-```
-
-### Example
+### Send a package
 ```python
-from pyPPL import SOAPConnector
-# TODO
+from pyPPL import PPL
+from pyPPL.models import (Package, Sender, Receiver, WeightedPackageInfo, PaymentInfo, PackageExternalNumber, PackageFlag, PackageService)
+from pyPPL.conf import (Product, Services, Flag)
+
+ppl = PPL(
+    soap_customer_id="your_customer_id",
+    soap_username="your_password",
+    soap_password="your_password",
+)
+soap = ppl.soap_connector()
+soap.login()
+soap.is_healthy()
+
+package = Package(
+    package_number="12445678",
+    package_product_type=Product.PPL_PARCEL_CZ_PRIVATE_COD,
+    note = "test",
+    recipient=Recipient(
+        name="John Doe",
+        city="Praha",
+        street="Malostranské náměstí 2/25",
+        zip_code="11800",
+        phone="123456789",
+        email="j.doe@example.com",
+        country = 'CZ'
+    ),
+    sender=Sender(
+        name="Example s.r.o.",
+        street="Sněmovní 176/6",
+        city="Praha",
+        zip_code="11800",
+        country="CZ",
+    ),
+    payment_info=PaymentInfo(
+        cod_price=100,
+        cod_currency='CZK',
+        cod_vs='123456789',
+        insurance_price=100,
+        insurance_currency='CZK',
+        specific_symbol='123456',
+        bank_account='123456789',
+        bank_code='0300'
+    ),
+    weighted_package_info=WeightedPackageInfo(
+        weight=10.22,
+    ),
+    external_numbers=[
+        PackageExternalNumber(
+            external_number='123456789',
+            code=ExternalNumber.B2CO
+        ),
+        PackageExternalNumber(
+            external_number='123456789',
+            code=ExternalNumber.CUST
+        )
+    ],
+    flags=[
+        PackageFlag(
+            code=Flag.CL,
+            value=True
+        )
+    ],
+    package_services=[
+        PackageService(
+            code=Services.DPOD,
+        )
+    ],
+)
+soap.send_package(packages=[package])
+```
+
+### Get label for a package
+```python
+from pyPPL import PPL
+from pyPPL.models import (Package, Sender, Receiver, WeightedPackageInfo, PaymentInfo, PackageExternalNumber, PackageFlag, PackageService)
+from pyPPL.conf import (Product, Services, Flag)
+
+ppl = PPL(
+    soap_customer_id="your_customer_id",
+    soap_username="your_password",
+    soap_password="your_password",
+)
+rest = ppl.rest_connector()
+
+package = Package(
+    package_number="12445678",
+    package_product_type=Product.PPL_PARCEL_CZ_PRIVATE_COD,
+    note = "test",
+    recipient=Recipient(
+        name="John Doe",
+        city="Praha",
+        street="Malostranské náměstí 2/25",
+        zip_code="11800",
+        phone="123456789",
+        email="j.doe@example.com",
+        country = 'CZ'
+    ),
+    sender=Sender(
+        name="Example s.r.o.",
+        street="Sněmovní 176/6",
+        city="Praha",
+        zip_code="11800",
+        country="CZ",
+    ),
+    payment_info=PaymentInfo(
+        cod_price=100,
+        cod_currency='CZK',
+        cod_vs='123456789',
+        insurance_price=100,
+        insurance_currency='CZK',
+        specific_symbol='123456',
+        bank_account='123456789',
+        bank_code='0300'
+    ),
+    weighted_package_info=WeightedPackageInfo(
+        weight=10.22,
+    ),
+    external_numbers=[
+        PackageExternalNumber(
+            external_number='123456789',
+            code=ExternalNumber.B2CO
+        ),
+        PackageExternalNumber(
+            external_number='123456789',
+            code=ExternalNumber.CUST
+        )
+    ],
+    flags=[
+        PackageFlag(
+            code=Flag.CL,
+            value=True
+        )
+    ],
+    package_services=[
+        PackageService(
+            code=Services.DPOD,
+        )
+    ],
+)
+rest.get_labels(
+    packages=[package],
+    file_path = './label_out',
+    file_name = 'john_doe_label.pdf',
+)
 ```
 
 
-## Development
+## Development
 If you're keen on contributing to this project, you can do so by forking this repository and creating a pull request. Please make sure to follow the [PEP8](https://www.python.org/dev/peps/pep-0008/) style guide.
