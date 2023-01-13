@@ -93,9 +93,8 @@ from pyPPL.models import (Package, Sender, Receiver, WeightedPackageInfo, Paymen
 from pyPPL.conf import (Product, Services, Flag)
 
 ppl = PPL(
-    soap_customer_id="your_customer_id",
-    soap_username="your_password",
-    soap_password="your_password",
+    rest_client_id = "your_client_id",
+    rest_client_secret = "your_client_secret",
 )
 rest = ppl.rest_connector()
 
