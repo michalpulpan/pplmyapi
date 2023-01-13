@@ -1,3 +1,5 @@
 **/.env
 env/
 logs/
+out_test/
+official-docs/
