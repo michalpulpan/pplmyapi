@@ -3,3 +3,4 @@ env/
 logs/
 out_test/
 official-docs/
+main.py
