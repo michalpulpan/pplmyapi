@@ -3,7 +3,7 @@ Czech PPL (Professional Parcel Logistic) API wrapper written in Python. Helps yo
 
 # Install it from PyPI
 ```bash
-pip install pyPPL
+pip install pplmyapi
 ```
 
 ## Usage
