@@ -1,19 +1,21 @@
 from pyPPL.conf import Product, ExternalNumber, Flag, Services
-from pyPPL.models.dormant import Dormant
-from pyPPL.models.package_flag import PackageFlag
-from pyPPL.models.package_service import PackageService
-from pyPPL.models.payment_info import PaymentInfo
-from pyPPL.models.recipient import Recipient
-from pyPPL.models.sender import Sender
-from pyPPL.models.special_delivery import SpecialDelivery
-from pyPPL.models.weighted_package_info import WeightedPackageInfo
-from pyPPL.models.package_external_number import PackageExternalNumber
-from pyPPL.soap_connector import SOAPConnector
-from pyPPL.rest_connector import RESTConnector
+from pyPPL.models import (
+    Dormant,
+    PackageFlag,
+    PackageService,
+    PaymentInfo,
+    Recipient,
+    Sender,
+    SpecialDelivery,
+    WeightedPackageInfo,
+    PackageExternalNumber,
+    Package,
+)
+from pyPPL.connector import (SOAPConnector, RESTConnector)
 import logging.config
 from datetime import datetime
 from os import path
-from pyPPL.models.package import Package
+# from pyPPL.models.package import Package
 
 
 CONFIG_DIR = "./config"

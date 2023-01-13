@@ -1,12 +1,8 @@
 import logging
-import requests
 import requests.adapters
 from abc import (ABC, abstractmethod, )
 from datetime import datetime
 from typing import Tuple
-import xmltodict
-import json
-import copy
 
 from pyPPL.models.package import Package
 
@@ -23,14 +19,16 @@ from .soap_actions.business.get_packages import SOAPActionGetPackages
 
 
 
-from . import conf
+from pyPPL.conf import (
+    SOAP_AUTH_TOKEN_MAX_AGE,
+)
 
 logger = logging.getLogger(__name__)
 
 class SOAPConnector:
     AUTH_TOKEN = None
     AUTH_TOKEN_TIMESTAMP = None
-    AUTH_TOKEN_MAX_AGE = conf.SOAP_AUTH_TOKEN_MAX_AGE
+    AUTH_TOKEN_MAX_AGE = SOAP_AUTH_TOKEN_MAX_AGE
 
 
     def __init__(self) -> None:

@@ -1,41 +1,30 @@
 import logging
 import requests
 import requests.adapters
-from abc import (ABC, abstractmethod, )
-from datetime import datetime
-from typing import Tuple
-import xmltodict
-import json
-import copy
 
-from pyPPL.models.package import Package
-from pyPPL.rest_actions.get_labels import RESTActionGetLabels
+from pyPPL.models import Package
+from .rest_actions.get_labels import RESTActionGetLabels
 
-# operational SOAP actions
-from .soap_actions.operational.login import SOAPActionLogin
-from .soap_actions.operational.is_healthy import SOAPActionIsHealthy
-from .soap_actions.operational.version import SOAPActionVersion
-# business SOAP actions
-from .soap_actions.business.create_orders import SOAPActionCreateOrders
-from .soap_actions.business.create_packages import SOAPActionCreatePackages
-from .soap_actions.business.cancel_package import SOAPActionCancelPackage
-from .soap_actions.business.get_packages import SOAPActionGetPackages
-
-from .conf import (LabelReturnChanel, LabelSettingModel, )
+from pyPPL.conf import (LabelReturnChanel, LabelSettingModel, )
 
 from base64 import b64decode
 
 import os
 
-from . import conf
+from pyPPL.conf import (
+    REST_OAUTH2_TOKEN_URL,
+    REST_GRANT_TYPE,
+    REST_CLIENT_ID,
+    REST_CLIENT_SECRET,
+)
 
 logger = logging.getLogger(__name__)
 
 class RESTConnector:
-    TOKEN_URL = conf.REST_OAUTH2_TOKEN_URL
-    GRANT_TYPE = conf.REST_GRANT_TYPE
-    CLIENT_ID = conf.REST_CLIENT_ID
-    CLIENT_SECRET = conf.REST_CLIENT_SECRET
+    TOKEN_URL = REST_OAUTH2_TOKEN_URL
+    GRANT_TYPE = REST_GRANT_TYPE
+    CLIENT_ID = REST_CLIENT_ID
+    CLIENT_SECRET = REST_CLIENT_SECRET
     
     ACCESS_TOKEN = None
 

@@ -9,18 +9,22 @@ import copy
 # import xml.etree.ElementTree as ET
 from lxml import etree
 
-from .. import conf
+from pyPPL.conf import (
+    SOAP_API_URL,
+    SOAP_HEADERS,
+    SOAP_AUTH_TOKEN_MAX_AGE,
+)
 
 class SOAPAction(ABC):
     ACTION = None
     HEADERS = None
-    URL = conf.SOAP_API_URL
+    URL = SOAP_API_URL
     data = ''
     soap_body = None
 
     def __init__(self) -> None:
         
-        self.HEADERS = copy.deepcopy(conf.SOAP_HEADERS) # copy headers to avoid changing original headers in conf
+        self.HEADERS = copy.deepcopy(SOAP_HEADERS) # copy headers to avoid changing original headers in conf
         
         if self.ACTION is None:
             raise NotImplementedError('SOAPAction.ACTION must be set')
