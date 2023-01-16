@@ -1,9 +1,22 @@
-# 📦📦 pplmyapi (Python PPL myAPI wrapper) 
+Metadata-Version: 2.1
+Name: pyppl
+Version: 0.0.1
+Summary: Python client for PPL API
+Home-page: https://github.com/michalpulpan/pyPPL
+Author: Michal Půlpán
+Author-email: michal@michalpulpan.cz
+License: MIT
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Topic :: Utilities
+Description-Content-Type: text/markdown
+License-File: LICENCE
+
+# 📦📦 pyPPL 
 Czech PPL (Professional Parcel Logistic) API wrapper written in Python. Helps you to communicate with PPL myAPI without worring about constructing your own SOAP headers, bodies or even fetching access tokens. All (hopefully) done for you in the background.
 
 # Install it from PyPI
 ```bash
-pip install pplmyapi
+pip install pyPPL
 ```
 
 ## Usage
@@ -15,9 +28,9 @@ This is still a work in progress, so the API might change in the future. However
 
 ### Send a package
 ```python
-from pplmyapi import PPL
-from pplmyapi.models import (Package, Sender, Receiver, WeightedPackageInfo, PaymentInfo, PackageExternalNumber, PackageFlag, PackageService)
-from pplmyapi.conf import (Product, Services, Flag)
+from pyPPL import PPL
+from pyPPL.models import (Package, Sender, Receiver, WeightedPackageInfo, PaymentInfo, PackageExternalNumber, PackageFlag, PackageService)
+from pyPPL.conf import (Product, Services, Flag)
 
 ppl = PPL(
     soap_customer_id="your_customer_id",
@@ -88,9 +101,9 @@ soap.send_package(packages=[package])
 
 ### Get label for a package
 ```python
-from pplmyapi import PPL
-from pplmyapi.models import (Package, Sender, Receiver, WeightedPackageInfo, PaymentInfo, PackageExternalNumber, PackageFlag, PackageService)
-from pplmyapi.conf import (Product, Services, Flag)
+from pyPPL import PPL
+from pyPPL.models import (Package, Sender, Receiver, WeightedPackageInfo, PaymentInfo, PackageExternalNumber, PackageFlag, PackageService)
+from pyPPL.conf import (Product, Services, Flag)
 
 ppl = PPL(
     rest_client_id = "your_client_id",
