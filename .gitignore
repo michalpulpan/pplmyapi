@@ -4,6 +4,9 @@ logs/
 out_test/
 official-docs/
 main.py
-*.egg-info/
+pplmyapi.egg-info/
+pyppl_connector.egg-info/
+pyppl.egg-info/
+UNKNOWN.egg-info/
 dist/
 build/
