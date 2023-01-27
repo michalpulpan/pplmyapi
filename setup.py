@@ -17,25 +17,28 @@ def parse_reqs(f='requirements.txt'):
     return ret
 
 
-setup_requires = ['setuptools']
 install_requires, tests_require = parse_reqs(), parse_reqs('requirements-test.txt')
+setup_requires = ['setuptools'] + install_requires
 
+print('install_requires: ', install_requires)
+print('tests_require: ', tests_require)
+print('setup_requires: ', setup_requires)
 
 with open('README.md') as readmefile:
     long_description = readmefile.read()
 
 
-# class PyTest(test):
-#     def finalize_options(self):
-#         test.finalize_options(self)
-#         self.test_args = []
-#         self.test_suite = True
+class PyTest(test):
+    def finalize_options(self):
+        test.finalize_options(self)
+        self.test_args = []
+        self.test_suite = True
 
-#     def run_tests(self):
-#         # import here, cause outside the eggs aren't loaded
-#         import pytest
-#         errno = pytest.main(self.test_args)
-#         sys.exit(errno)
+    def run_tests(self):
+        # import here, cause outside the eggs aren't loaded
+        import pytest
+        errno = pytest.main(self.test_args)
+        sys.exit(errno)
 
 
 setup(
@@ -60,5 +63,5 @@ setup(
     setup_requires=setup_requires,
     install_requires=install_requires,
     tests_require=tests_require,
-    # cmdclass={'test': PyTest}
+    cmdclass={'test': PyTest}
 )
