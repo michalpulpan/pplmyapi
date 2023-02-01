@@ -14,7 +14,7 @@ from pplmyapi.models.dormant import Dormant
 
 from ..validators import (max_length, )
 from .base import (SerializableObject, SerializerField, SerializerList, )
-from ..conf import (Product, CASH_ON_DELIVERY, PARCEL_SHOP_PRODUCTS, Services, Age, DELIVERY_DOMESTIC, DELIVERY_INTERNATIONAL,)
+from ..conf import (ImportStatus, Product, CASH_ON_DELIVERY, PARCEL_SHOP_PRODUCTS, Services, Age, DELIVERY_DOMESTIC, DELIVERY_INTERNATIONAL,)
 from typing import Union
 
 class Package(SerializableObject):
@@ -36,7 +36,7 @@ class Package(SerializableObject):
     ])
 
     json_mapping = OrderedDict([
-        ('package_number', SerializerField('referenceId')),
+        ('reference_id', SerializerField('referenceId')),
         ('package_product_type', SerializerField('productType')),
         ('note', SerializerField('note')),
         ('age_check', SerializerField('ageCheck')),
@@ -53,7 +53,7 @@ class Package(SerializableObject):
         ('weighted_package_info', SerializerField('weighedShipmentInfo')),
     ])
 
-    package_number: str = None
+    reference_id: str = None
     package_product_type: str = None
     note: str = None
     sender: Sender = None
@@ -69,11 +69,13 @@ class Package(SerializableObject):
     age_check: Age = None
     dormant: Dormant = None
     insurance: Insurance = None
+    shipment_number: str = None
+    import_state: ImportStatus = None
 
 
     def __init__(
         self,
-        package_number: str,
+        reference_id: str,
         package_product_type: str,
         note: str,
         recipient: Recipient,
@@ -92,7 +94,7 @@ class Package(SerializableObject):
         ) -> None:
         
         self.note = max_length(note, 300)
-        self.package_number = max_length(package_number, 20)
+        self.reference_id = max_length(reference_id, 20)
         
         self.sender = sender
         self.recipient = recipient
@@ -122,7 +124,7 @@ class Package(SerializableObject):
         self.weighted_package_info = weighted_package_info
         if package_set is None:
             # create a new package set containing this package only
-            package_set = PackageSet(package_number)
+            package_set = PackageSet(reference_id)
         self.package_set = package_set
 
         if age_check is not None:

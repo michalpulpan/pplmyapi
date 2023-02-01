@@ -23,7 +23,7 @@ class PackageSet(SerializableObject):
 
     def __init__(
         self,
-        master_number: str,
+        master_number: str = None,
         current_number_in_set: int = 1,
         total_packages: int = 1,
         ) -> None:

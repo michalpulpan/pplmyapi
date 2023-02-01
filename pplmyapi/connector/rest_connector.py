@@ -3,7 +3,9 @@ import requests
 import requests.adapters
 
 from pplmyapi.models import Package
-from .rest_actions.get_labels import RESTActionGetLabels
+# from .rest_actions.get_labels import RESTActionGetLabels
+
+from .rest_actions.shipment_batch import RESTActionShipmentBatch
 
 from pplmyapi.conf import (LabelReturnChanel, LabelSettingModel, )
 
@@ -37,8 +39,6 @@ class RESTConnector:
         self.client_secret = client_secret
         self.session = requests.Session()
         self.get_access_token()
-        
-
 
     def get_access_token(self):
         if self.ACCESS_TOKEN is not None:
@@ -64,12 +64,11 @@ class RESTConnector:
     def call():
         pass
 
-
     """
     REST methods
     """
     
-    def get_labels(self, 
+    def post_shipments(self, 
         packages: list[Package] = [], 
         return_chanel_type: LabelReturnChanel = LabelReturnChanel.HTTP,
         return_chanel_address: str = None,
@@ -92,7 +91,7 @@ class RESTConnector:
 
         # get labels for packages - call api
         
-        get_labels = RESTActionGetLabels(
+        get_labels = RESTActionShipmentBatch(
             token = self.get_access_token(),
             packages = packages,
             return_chanel_type = return_chanel_type,
