@@ -6,6 +6,7 @@ from pplmyapi.models import Package
 # from .rest_actions.get_labels import RESTActionGetLabels
 
 from .rest_actions.shipment_batch import RESTActionShipmentBatch
+from .rest_actions.shipment_info import RESTActionShipmentInfo
 
 from pplmyapi.conf import (LabelReturnChanel, LabelSettingModel, )
 
@@ -67,7 +68,48 @@ class RESTConnector:
     """
     REST methods
     """
-    
+
+    def cancel_shipment(self,
+        shipment_number: str = None,
+    ) -> dict:
+        """
+        Cancel shipment by shipment number
+        """
+        if shipment_number is None:
+            raise Exception('No shipment number provided. Please provide shipment number.')
+        # cancel shipment - call api
+        cancel = RESTActionShipmentCancel(
+            token = self.get_access_token(),
+            shipment_number = shipment_number,
+            session = self.session,
+        )
+        response = cancel()
+        return response
+    )
+
+    def get_shipments(self,
+        shipment_numbers: list[str] = [],
+        invoice_numbers: list[str] = [],
+        customer_reference_numbers: list[str] = [],
+        variable_symbol_numbers: list[str] = [],
+    ) -> dict:
+        """
+        Get shipments by shipment number, invoice number, customer reference number or variable symbol number
+        """
+        if not (shipment_numbers or invoice_numbers or customer_reference_numbers or variable_symbol_numbers):
+            raise Exception('No shipment numbers, invoice numbers, customer reference numbers or variable symbol numbers provided. Please provide at least one.')
+        # get shipments - call api
+        info = RESTActionShipmentInfo(
+            token = self.get_access_token(),
+            shipment_numbers = shipment_numbers,
+            invoice_numbers = invoice_numbers,
+            customer_reference_numbers = customer_reference_numbers,
+            variable_symbol_numbers = variable_symbol_numbers,
+            session = self.session,
+        )
+        response = info()
+        return response
+        
     def post_shipments(self, 
         packages: list[Package] = [], 
         return_chanel_type: LabelReturnChanel = LabelReturnChanel.HTTP,
