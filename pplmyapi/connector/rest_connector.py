@@ -7,7 +7,7 @@ from pplmyapi.models import Package
 
 from .rest_actions.shipment_batch import RESTActionShipmentBatch
 from .rest_actions.shipment_info import RESTActionShipmentInfo
-
+from .rest_actions.shipment_cancel import RESTActionShipmentCancel
 from pplmyapi.conf import (LabelReturnChanel, LabelSettingModel, )
 
 from base64 import b64decode
@@ -85,7 +85,7 @@ class RESTConnector:
         )
         response = cancel()
         return response
-    )
+    
 
     def get_shipments(self,
         shipment_numbers: list[str] = [],
