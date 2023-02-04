@@ -134,8 +134,8 @@ class Package(SerializableObject):
             # insurance on label is provided only for:
             # - domestic parcels with value > 50 000 CZK
             # - international parcels with value > 100 000 CZK
-            if (package_product_type in DELIVERY_DOMESTIC and insurance.value > 50000) or \
-                (package_product_type in DELIVERY_INTERNATIONAL and insurance.value > 100000):
+            if (package_product_type in DELIVERY_DOMESTIC and insurance.insurance_price > 50000) or \
+                (package_product_type in DELIVERY_INTERNATIONAL and insurance.insurance_price > 100000):
                     self.insurance = insurance
 
         if dormant is not None:

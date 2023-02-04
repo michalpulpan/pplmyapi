@@ -1,4 +1,4 @@
-from .connector import (SOAPConnector, RESTConnector)
+from .connector import (RESTConnector)
 from .conf import (
     SOAP_AUTH_TOKEN_MAX_AGE,
 )

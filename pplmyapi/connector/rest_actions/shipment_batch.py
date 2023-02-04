@@ -5,6 +5,7 @@ from pplmyapi.conf import (LabelReturnChanel, LabelSettingModel, ImportStatus, L
 import requests
 import json
 import base64
+import copy
 
 class RESTActionShipmentBatch:
     
@@ -79,11 +80,19 @@ class RESTActionShipmentBatch:
         # get labels for packages - call api
         labels = []
         for label_url in label_urls:
-            response = self.session.get(label_url)
-            if response.status_code != 200:
-                raise Exception(f'Error while getting labels: {response.text}')
-            labels.append(base64.b64encode(response.content).decode('utf-8'))
+            # response = self.session.get(label_url)
+            # if response.status_code != 200:
+            #     raise Exception(f'Error while getting labels: {response.text}')
+            # labels.append(base64.b64encode(response.content).decode('utf-8'))
+            label = self.get_label_from_url(label_url)
+            labels.append(label)
         return labels
+
+    def get_label_from_url(self, url):
+        response = self.session.get(url)
+        if response.status_code != 200:
+            raise Exception(f'Error while getting labels: {response.text}')
+        return base64.b64encode(response.content).decode('utf-8')
 
 
     def control_parcel_status(self, response):
@@ -129,12 +138,31 @@ class RESTActionShipmentBatch:
         if label_urls is None:
             raise Exception('No label URLs found in response')
         labels = self.get_labels_from_url(label_urls)
+        print('LABEL URLS', label_urls)
         # iterate over response, get shipmentNumber and label
         for item in response['items']:
             for package in self.packages:
                 if package.reference_id == item['referenceId']:
+                    # found package object for this item in response
                     package.shipment_number = item['shipmentNumber']
                     package.import_state = self.parse_control_parcel_status(item)
+                    # get label for this package
+                    package.label_base64 = self.get_label_from_url(item['labelUrl'])
+                    # check if it has related parcels
+                    if 'relatedItems' in item and package.package_set != None and len(item['relatedItems']) == package.package_set.total_packages - 1: # -1 because of base package
+                        # deep copy base package
+                        base_package = copy.deepcopy(package)
+                        base_package.payment_info = None
+                        base_package.package_set = None
+                        base_package.insurance = None
+                        # sort related items by shipmentNumber (because they are not sorted in response.........)
+                        related_items_correct_order = sorted(item['relatedItems'], key=lambda d: int(d['shipmentNumber'])) 
+                        for related_item in related_items_correct_order:
+                            related_package = copy.deepcopy(base_package)
+                            related_package.shipment_number = related_item['shipmentNumber']
+                            related_package.import_state = self.parse_control_parcel_status(related_item)
+                            related_package.label_base64 = self.get_label_from_url(related_item['labelUrl'])
+                            package.package_set.related_packages.append(related_package)
         
         return {
             'labels': labels,

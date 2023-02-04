@@ -2,6 +2,7 @@ from collections import OrderedDict
 from ..conf import (Currency, )
 from ..validators import (max_length, )
 from .base import (SerializableObject, SerializerField, )
+# from . import (Package, )
 
 class PackageSet(SerializableObject):
 
@@ -20,6 +21,7 @@ class PackageSet(SerializableObject):
     master_number: str = None
     current_number_in_set: int = 1
     total_packages: int = 1
+    related_packages: list = []
 
     def __init__(
         self,
