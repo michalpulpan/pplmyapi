@@ -71,7 +71,7 @@ class Package(SerializableObject):
     insurance: Insurance = None
     shipment_number: str = None
     import_state: ImportStatus = None
-
+    label_base64: str = None
 
     def __init__(
         self,
