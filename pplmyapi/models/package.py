@@ -12,46 +12,75 @@ from pplmyapi.models.package_flag import PackageFlag
 from pplmyapi.models.insurance import Insurance
 from pplmyapi.models.dormant import Dormant
 
-from ..validators import (max_length, )
-from .base import (SerializableObject, SerializerField, SerializerList, )
-from ..conf import (ImportStatus, Product, CASH_ON_DELIVERY, PARCEL_SHOP_PRODUCTS, Services, Age, DELIVERY_DOMESTIC, DELIVERY_INTERNATIONAL,)
+from ..validators import (
+    max_length,
+)
+from .base import (
+    SerializableObject,
+    SerializerField,
+    SerializerList,
+)
+from ..conf import (
+    ImportStatus,
+    Product,
+    CASH_ON_DELIVERY,
+    PARCEL_SHOP_PRODUCTS,
+    Services,
+    Age,
+    DELIVERY_DOMESTIC,
+    DELIVERY_INTERNATIONAL,
+)
 from typing import Union
 
+
 class Package(SerializableObject):
+    xml_mapping = OrderedDict(
+        [
+            ("package_number", SerializerField("v1:PackNumber")),
+            ("package_product_type", SerializerField("v1:PackProductType")),
+            ("note", SerializerField("v1:Note")),
+            ("depo_code", SerializerField("v1:DepoCode")),
+            ("sender", SerializerField("v1:Sender")),
+            ("recipient", SerializerField("v1:Recipient")),
+            ("special_delivery", SerializerField("v1:SpecialDelivery")),
+            ("payment_info", SerializerField("v1:PaymentInfo")),
+            (
+                "external_numbers",
+                SerializerList(
+                    "v1:PackagesExtNums", list_item_name="v1:MyApiPackageExtNum"
+                ),
+            ),
+            (
+                "package_services",
+                SerializerList(
+                    "v1:PackageServices", list_item_name="v1:MyApiPackageInServices"
+                ),
+            ),
+            ("flags", SerializerList("v1:PackageFlags", list_item_name="v1:MyApiFlag")),
+            ("package_set", SerializerField("v1:PackageSet")),
+            ("weighted_package_info", SerializerField("v1:WeightedPackageInfo")),
+        ]
+    )
 
-    xml_mapping = OrderedDict([
-        ('package_number', SerializerField('v1:PackNumber')),
-        ('package_product_type', SerializerField('v1:PackProductType')),
-        ('note', SerializerField('v1:Note')),
-        ('depo_code', SerializerField('v1:DepoCode')),
-        ('sender', SerializerField('v1:Sender')),
-        ('recipient', SerializerField('v1:Recipient')),
-        ('special_delivery', SerializerField('v1:SpecialDelivery')),
-        ('payment_info', SerializerField('v1:PaymentInfo')),
-        ('external_numbers', SerializerList('v1:PackagesExtNums', list_item_name='v1:MyApiPackageExtNum')),
-        ('package_services', SerializerList('v1:PackageServices', list_item_name='v1:MyApiPackageInServices')),
-        ('flags', SerializerList('v1:PackageFlags', list_item_name='v1:MyApiFlag')),
-        ('package_set', SerializerField('v1:PackageSet')),
-        ('weighted_package_info', SerializerField('v1:WeightedPackageInfo')),
-    ])
-
-    json_mapping = OrderedDict([
-        ('reference_id', SerializerField('referenceId')),
-        ('package_product_type', SerializerField('productType')),
-        ('note', SerializerField('note')),
-        ('age_check', SerializerField('ageCheck')),
-        ('depo_code', SerializerField('depot')),
-        ('package_set', SerializerField('shipmentSet')),
-        ('sender', SerializerField('sender')),
-        ('recipient', SerializerField('recipient')),
-        ('dormant', SerializerField('dormant')),
-        ('special_delivery', SerializerField('specificDelivery')),
-        ('payment_info', SerializerField('cashOnDelivery')),
-        ('external_numbers', SerializerList('externalNumbers')),
-        ('package_services', SerializerList('services')),
-        # ('flags', SerializerList('v1:PackageFlags', list_item_name='v1:MyApiFlag')), # DOESNT IMPLEMENT
-        ('weighted_package_info', SerializerField('weighedShipmentInfo')),
-    ])
+    json_mapping = OrderedDict(
+        [
+            ("reference_id", SerializerField("referenceId")),
+            ("package_product_type", SerializerField("productType")),
+            ("note", SerializerField("note")),
+            ("age_check", SerializerField("ageCheck")),
+            ("depo_code", SerializerField("depot")),
+            ("package_set", SerializerField("shipmentSet")),
+            ("sender", SerializerField("sender")),
+            ("recipient", SerializerField("recipient")),
+            ("dormant", SerializerField("dormant")),
+            ("special_delivery", SerializerField("specificDelivery")),
+            ("payment_info", SerializerField("cashOnDelivery")),
+            ("external_numbers", SerializerList("externalNumbers")),
+            ("package_services", SerializerList("services")),
+            # ('flags', SerializerList('v1:PackageFlags', list_item_name='v1:MyApiFlag')), # DOESNT IMPLEMENT
+            ("weighted_package_info", SerializerField("weighedShipmentInfo")),
+        ]
+    )
 
     reference_id: str = None
     package_product_type: str = None
@@ -72,6 +101,7 @@ class Package(SerializableObject):
     shipment_number: str = None
     import_state: ImportStatus = None
     label_base64: str = None
+    error: str = None
 
     def __init__(
         self,
@@ -82,41 +112,46 @@ class Package(SerializableObject):
         sender: Sender = None,
         depo_code: str = None,
         special_delivery: SpecialDelivery = None,
-        payment_info: PaymentInfo = None, 
+        payment_info: PaymentInfo = None,
         external_numbers: list[PackageExternalNumber] = [],
         package_services: list[PackageService] = [],
         flags: list[PackageFlag] = [],
         weighted_package_info: WeightedPackageInfo = None,
         package_set: PackageSet = None,
         age_check: Age = None,
-        dormant: Dormant = None, 
-        insurance: Insurance = None, 
-        ) -> None:
-        
+        dormant: Dormant = None,
+        insurance: Insurance = None,
+    ) -> None:
         self.note = max_length(note, 300)
         self.reference_id = max_length(reference_id, 20)
-        
+
         self.sender = sender
         self.recipient = recipient
-        
+
         if not package_product_type in Product:
-            raise ValueError(f'Product {package_product_type} is not supported')
+            raise ValueError(f"Product {package_product_type} is not supported")
         self.package_product_type = package_product_type.value
-        
+
         self.depo_code = max_length(depo_code, 10)
-        
-        if special_delivery is not None and special_delivery.parcel_shop_code is not None:
+
+        if (
+            special_delivery is not None
+            and special_delivery.parcel_shop_code is not None
+        ):
             # parcel shop code is only supported for parcel shop products
             if not package_product_type in PARCEL_SHOP_PRODUCTS:
-                raise ValueError(f'Product {package_product_type} does not support parcel shop in special delivery')
+                raise ValueError(
+                    f"Product {package_product_type} does not support parcel shop in special delivery"
+                )
         self.special_delivery = special_delivery
 
         if payment_info is not None and payment_info.is_cod():
             if not package_product_type in CASH_ON_DELIVERY:
-                raise ValueError(f'Product {package_product_type} does not support cash on delivery')
-        
-        self.payment_info = payment_info
+                raise ValueError(
+                    f"Product {package_product_type} does not support cash on delivery"
+                )
 
+        self.payment_info = payment_info
 
         self.external_numbers = external_numbers
         self.package_services = package_services
@@ -134,9 +169,14 @@ class Package(SerializableObject):
             # insurance on label is provided only for:
             # - domestic parcels with value > 50 000 CZK
             # - international parcels with value > 100 000 CZK
-            if (package_product_type in DELIVERY_DOMESTIC and insurance.insurance_price > 50000) or \
-                (package_product_type in DELIVERY_INTERNATIONAL and insurance.insurance_price > 100000):
-                    self.insurance = insurance
+            if (
+                package_product_type in DELIVERY_DOMESTIC
+                and insurance.insurance_price > 50000
+            ) or (
+                package_product_type in DELIVERY_INTERNATIONAL
+                and insurance.insurance_price > 100000
+            ):
+                self.insurance = insurance
 
         if dormant is not None:
             self.dormant = dormant
